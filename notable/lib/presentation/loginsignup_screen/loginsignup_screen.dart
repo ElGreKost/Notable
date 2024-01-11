@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:noteable_v0/services/auth_service.dart';
+import 'package:notable/routes/app_routes.dart';
+import 'package:notable/services/auth_service.dart';
 
 
 
@@ -79,14 +80,14 @@ class LoginsignupScreen extends StatelessWidget {
   }
 
   onTapLogin(BuildContext context) async {
-    if (_formKey.currentState?alidate() ?? false) {
+    if (_formKey.currentState?.validate() ?? false) {
       try {
         await AuthService().signIn(
           emailController.text,
           passwordController.text,
         );
         // Navigate to the homepageScreen upon successful login
-        Navigator.pushNamed(context, AppRoutesomepageScreen);
+        Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
         print('Login Error: $e');
