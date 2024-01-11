@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notable/routes/app_routes.dart';
 import 'package:notable/services/auth_service.dart';
 
-
+//TODO:  add a navigator from signupscreen to loginsignupscreen (velaki piso)
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({Key? key}) : super(key: key);
