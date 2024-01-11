@@ -34,7 +34,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
     loginsignupScreen: (context) => LoginsignupScreen(),
     homepageScreen: (context) => const HomepageScreen(),
-    cameraScreen: (context) => const CameraScreen(),
+    cameraScreen: (context) => CameraScreen(),
     textpreviewPage: (context) => const TextPreviewPage(), // changed from page-container to page
     opennoteScreen: (context) => const OpennoteScreen(),
     createAccountScreen: (context) => CreateAccountScreen(),
