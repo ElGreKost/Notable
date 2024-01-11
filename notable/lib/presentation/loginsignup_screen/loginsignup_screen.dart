@@ -90,6 +90,7 @@ class LoginsignupScreen extends StatelessWidget {
         Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
+        // todo make the Forgot Password visible
         print('Login Error: $e');
       }
     }
