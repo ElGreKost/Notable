@@ -4,9 +4,9 @@ class ImageConstant {
   static String imagePath = 'assets/images';
 
   // HomePage images
-  static String imgFinalLogo11 = '$imagePath/img_final_logo_1_1.png';
+  static String imgLogo = '$imagePath/logo.png';
 
-  static String imgEllipse47 = '$imagePath/img_ellipse_47.png';
+  static String imgUserImage = '$imagePath/img_user_image.png';
 
   static String imgArrowright = '$imagePath/img_arrowright.svg';
 

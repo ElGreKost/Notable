@@ -214,7 +214,7 @@ class LogoWidget extends StatelessWidget {
         Navigator.pushNamed(context, AppRoutes.homepageScreen);
       },
       child: CustomImageView(
-        imagePath: ImageConstant.imgFinalLogo11,
+        imagePath: ImageConstant.imgLogo,
         height: height ?? 116.v, // Use the height passed in, or default to 116.v if null
         width: width ?? 69.h, // Use the width passed in, or default to 69.h if null
       ),

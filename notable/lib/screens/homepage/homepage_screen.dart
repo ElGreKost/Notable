@@ -46,7 +46,7 @@ class HomepageScreen extends StatelessWidget {
                                     decoration: AppDecoration.fillPrimary,
                                     child: UserInfoHeader(
                                       name: "Αχιλλέας\nΜπραϊμάκης",
-                                      imagePath: ImageConstant.imgEllipse47, // Replace with your image path
+                                      imagePath: ImageConstant.imgUserImage, // Replace with your image path
                                     )),
                                 SizedBox(height: 5.v),
                                 Align(
