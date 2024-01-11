@@ -5,7 +5,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
-def localProperties = Properties()
+def localProperties = new Properties() // needs the new even though error is shown
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
@@ -50,6 +50,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
