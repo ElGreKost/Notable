@@ -48,5 +48,15 @@ class AuthService {
       }
     }
   }
+
+  // Sign out the user
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print('Error: $e');
+      throw ('An error occurred during sign-out.');
+    }
+  }
 }
 

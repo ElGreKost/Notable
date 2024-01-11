@@ -6,6 +6,9 @@ import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/alerts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:notable/services/auth_service.dart';
+
+final AuthService authService = AuthService();
 
 class HomepageScreen extends StatelessWidget {
   const HomepageScreen({Key? key}) : super(key: key);
@@ -72,8 +75,13 @@ class HomepageScreen extends StatelessWidget {
                                                   title: "Sign Out",
                                                   desc: "Are you sure?",
                                                   type: AlertType.none,
-                                                  onPressed: () =>
-                                                      Navigator.pushNamed(context, AppRoutes.loginsignupScreen)))
+                                                onPressed: () async {
+                                                  // Perform logout
+                                                  await authService.signOut();
+                                                  Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
+                                                },
+                                              ),
+                                          ),
                                         ]))),
                                 SizedBox(height: 21.v),
                                 Padding(

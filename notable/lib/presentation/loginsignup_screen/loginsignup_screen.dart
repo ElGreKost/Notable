@@ -87,7 +87,7 @@ class LoginsignupScreen extends StatelessWidget {
           passwordController.text,
         );
         // Navigate to the homepageScreen upon successful login
-        Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
+        Navigator.pushNamed(context, AppRoutes.homepageScreen);
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
         // todo make the Forgot Password visible
