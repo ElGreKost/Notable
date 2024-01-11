@@ -16,7 +16,7 @@ class FoldersListView extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 32.h),
           child: ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
             separatorBuilder: (context, index) => SizedBox(height: 31.v),
             itemCount: folderNames.length,

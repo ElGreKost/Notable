@@ -33,13 +33,13 @@ class AppRoutes {
   //  and a Widget that is the page itself.
   static Map<String, WidgetBuilder> routes = {
     loginsignupScreen: (context) => LoginsignupScreen(),
-    homepageScreen: (context) => HomepageScreen(),
-    cameraScreen: (context) => CameraScreen(),
-    textpreviewPage: (context) => TextPreviewPage(), // changed from page-container to page
-    opennoteScreen: (context) => OpennoteScreen(),
+    homepageScreen: (context) => const HomepageScreen(),
+    cameraScreen: (context) => const CameraScreen(),
+    textpreviewPage: (context) => const TextPreviewPage(), // changed from page-container to page
+    opennoteScreen: (context) => const OpennoteScreen(),
     createAccountScreen: (context) => CreateAccountScreen(),
     myProfileScreen: (context) => MyProfileScreen(),
-    appNavigationScreen: (context) => AppNavigationScreen(),
+    appNavigationScreen: (context) => const AppNavigationScreen(),
     signupScreen: (context) => SignupScreen()
   };
 }

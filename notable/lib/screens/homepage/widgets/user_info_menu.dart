@@ -5,7 +5,7 @@ class UserInfoHeader extends StatelessWidget {
   final String name;
   final String imagePath;
 
-  UserInfoHeader({Key? key, required this.name, required this.imagePath}) : super(key: key);
+  const UserInfoHeader({Key? key, required this.name, required this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

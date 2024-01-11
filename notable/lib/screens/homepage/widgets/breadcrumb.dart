@@ -7,7 +7,7 @@ class CustomBreadcrumb extends StatelessWidget {
   final List<String> breadcrumbs;
   final Function(int) onTapBreadcrumb;
 
-  CustomBreadcrumb({Key? key, required this.breadcrumbs, required this.onTapBreadcrumb}) : super(key: key);
+  const CustomBreadcrumb({Key? key, required this.breadcrumbs, required this.onTapBreadcrumb}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class CustomBreadcrumb extends StatelessWidget {
         ),
       )
           .toList(),
-      divider: Icon(Icons.chevron_right),
+      divider: const Icon(Icons.chevron_right),
     );
   }
 }
@@ -36,7 +36,7 @@ class GradientBreadcrumb extends StatelessWidget {
   final List<String> breadcrumbs;
   final Function(int) onTapBreadcrumb;
 
-  GradientBreadcrumb({
+  const GradientBreadcrumb({
     Key? key,
     required this.breadcrumbs,
     required this.onTapBreadcrumb,
@@ -48,11 +48,11 @@ class GradientBreadcrumb extends StatelessWidget {
 
     return Container(
       width: double.maxFinite,
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment(0, 0.5),
-          end: Alignment(1, 0.5),
+          begin: const Alignment(0, 0.5),
+          end: const Alignment(1, 0.5),
           colors: [
             theme.colorScheme.primary,
             appTheme.teal2007c,
@@ -65,7 +65,7 @@ class GradientBreadcrumb extends StatelessWidget {
             color: Colors.black.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 1,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),

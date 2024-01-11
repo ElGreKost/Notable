@@ -8,7 +8,7 @@ var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final FirebaseOptions firebaseOptions = FirebaseOptions(
+  const FirebaseOptions firebaseOptions = FirebaseOptions(
     apiKey: 'AIzaSyC_t7R-Bx1iqBoAmsfNhRaJj4s0wyEBHG8',
     authDomain: 'notabledb.firebaseapp.com',
     projectId: 'notabledb',
@@ -26,7 +26,7 @@ void main() async {
 
   ///Please update theme as per your need if required.
   // ThemeHelper().changeTheme('primary');
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
