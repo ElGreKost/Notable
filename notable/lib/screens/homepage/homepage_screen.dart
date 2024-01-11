@@ -11,7 +11,8 @@ import 'package:notable/services/auth_service.dart';
 final AuthService authService = AuthService();
 
 class HomepageScreen extends StatelessWidget {
-  const HomepageScreen({Key? key}) : super(key: key);
+  final currUid; // todo could be null
+  const HomepageScreen({this.currUid});
 
   @override
   Widget build(BuildContext context) {

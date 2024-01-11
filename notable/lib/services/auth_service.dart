@@ -4,12 +4,13 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Create a new user account
-  Future<void> signUp(String email, String password) async {
+  Future signUp(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      return _auth.currentUser?.uid; // to pass to homepageScreen
     } catch (e) {
       print('Error: $e');
       if (e is FirebaseAuthException) {

@@ -2,9 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:notable/routes/app_routes.dart';
+import 'package:notable/screens/homepage/homepage_screen.dart';
 import 'package:notable/services/auth_service.dart';
-
-
 
 class LoginsignupScreen extends StatelessWidget {
   LoginsignupScreen({Key? key}) : super(key: key);
@@ -62,13 +61,15 @@ class LoginsignupScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     onTapLogin(context);
-                  }, child: Text('LogIn'),
+                  },
+                  child: Text('LogIn'),
                 ),
                 SizedBox(height: 9),
                 ElevatedButton(
                   onPressed: () {
                     onTapCreateAnAccount(context);
-                  }, child: Text('Create account'),
+                  },
+                  child: Text('Create account'),
                 ),
                 SizedBox(height: 5),
               ],
@@ -82,12 +83,15 @@ class LoginsignupScreen extends StatelessWidget {
   onTapLogin(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        await AuthService().signIn(
+        Future currUid = AuthService().signIn(
           emailController.text,
           passwordController.text,
         );
         // Navigate to the homepageScreen upon successful login
-        Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomepageScreen(currUid: currUid))
+        );
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
         // todo make the Forgot Password visible
