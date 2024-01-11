@@ -61,8 +61,8 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(height: 52),
                 ElevatedButton(
                   onPressed: () {
-                    onTapLogin(context);
-                  }, child: Text('LogIn'),
+                    onTapCreateAnAccount(context);
+                  }, child: Text('Create your account'),
                 ),
               ],
             ),
@@ -80,7 +80,7 @@ class SignupScreen extends StatelessWidget {
           passwordController.text,
         );
         // Navigate to the homepageScreen upon successful login
-        Navigator.pushNamed(context, AppRoutes.signupScreen);
+        Navigator.pushNamed(context, AppRoutes.homepageScreen);
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
         print('Login Error: $e');
@@ -96,7 +96,7 @@ class SignupScreen extends StatelessWidget {
           passwordController.text,
         );
         // Navigate to the homepageScreen upon successful signup
-        Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
+        Navigator.pushNamed(context, AppRoutes.homepageScreen);
       } catch (e) {
         // Handle signup errors (display error message or take appropriate action)
         print('Signup Error: $e');
