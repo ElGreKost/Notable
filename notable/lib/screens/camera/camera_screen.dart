@@ -1,12 +1,11 @@
-import '../../widgets/custom_app_bar.dart';
+import '../../routes/app_routes.dart';
+// import '../../widgets/app_bar/custom_app_bar.dart';
 
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-
-import '../textpreview/textpreview_page.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -57,7 +56,7 @@ class _CameraScreenState extends State<CameraScreen> {
       return Container(); // or a loader
     }
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: AppBar(
         title: Text('Focus your Note'),
         centerTitle: true,
       ),
@@ -95,33 +94,25 @@ class _CameraScreenState extends State<CameraScreen> {
   onTapCamera(BuildContext context) async {
     try {
       final image = await cameraController!.takePicture();
-      final ocrText = await processImageForOCR(image.path);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TextPreviewPage(ocrText: ocrText)
-        )
-      );
-
+      await processImageForOCR(image.path);
     } catch (e) {
       print(e); // Handle error
     }
+    Navigator.pushNamed(context, AppRoutes.textpreviewPage);
   }
 
-  Future<String> processImageForOCR(String imagePath) async {
+  Future<void> processImageForOCR(String imagePath) async {
     final inputImage = InputImage.fromFilePath(imagePath);
     final textRecognizer = GoogleMlKit.vision.textRecognizer();
     final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
 
-    String fullText = "";
-
     for (TextBlock block in recognizedText.blocks) {
+      final String text = block.text;
       for (TextLine line in block.lines) {
+        // Each line in a block of text
         print(line.text);
       }
     }
     textRecognizer.close();
-    return fullText;
   }
 }
