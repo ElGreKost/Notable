@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notable/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
+import 'app_state.dart';
 import 'firebase_options.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -32,15 +34,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider<AppState>(
+      create: (BuildContext context) => AppState(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: AppRoutes.loginsignupScreen,
+        // static Map<String, WidgetBuilder> for connections str->Widget
+        routes: AppRoutes.routes,
       ),
-      initialRoute: AppRoutes.loginsignupScreen,
-      // static Map<String, WidgetBuilder> for connections str->Widget
-      routes: AppRoutes.routes,
     );
   }
 }

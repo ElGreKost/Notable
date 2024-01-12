@@ -4,13 +4,13 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Create a new user account
-  Future signUp(String email, String password) async {
+  Future<User?> signUp(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return _auth.currentUser?.uid; // to pass to homepageScreen
+      return _auth.currentUser;
     } catch (e) {
       print('Error: $e');
       if (e is FirebaseAuthException) {
@@ -28,12 +28,13 @@ class AuthService {
   }
 
   // Sign in with an existing account
-  Future<void> signIn(String email, String password) async {
+  Future<User?> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      return _auth.currentUser;
     } catch (e) {
       print('Error: $e');
       if (e is FirebaseAuthException) {

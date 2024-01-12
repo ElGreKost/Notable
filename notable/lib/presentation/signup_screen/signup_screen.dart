@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notable/routes/app_routes.dart';
 import 'package:notable/services/auth_service.dart';
+import 'package:provider/provider.dart';
+
+import '../../app_state.dart';
 
 //TODO:  add a navigator from signupscreen to loginsignupscreen (velaki piso)
 
@@ -71,7 +75,7 @@ class SignupScreen extends StatelessWidget {
       ),
     );
   }
-
+  // todo delete_me???
   onTapLogin(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
@@ -91,11 +95,11 @@ class SignupScreen extends StatelessWidget {
   onTapCreateAnAccount(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        await AuthService().signUp(
+        User? currUser = await AuthService().signUp(
           emailController.text,
           passwordController.text,
         );
-        // Navigate to the homepageScreen upon successful signup
+        Provider.of<AppState>(context,listen: false).setUser(currUser);
         Navigator.pushNamed(context, AppRoutes.homepageScreen);
       } catch (e) {
         // Handle signup errors (display error message or take appropriate action)

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../app_state.dart';
 import 'widgets/breadcrumb.dart';
 import 'widgets/folder_list.dart';
 import 'widgets/user_info_menu.dart';
@@ -12,12 +14,18 @@ import 'package:notable/services/auth_service.dart';
 final AuthService authService = AuthService();
 
 class HomepageScreen extends StatelessWidget {
-  final currUid; // todo could be null
-  const HomepageScreen({this.currUid});
+  HomepageScreen({super.key});
+
+  TextEditingController folderNameController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    // The string below can be used to initialize the user's info in firebase
+    String? currUid = Provider.of<AppState>(context).userUid;
+    String? currEmail = Provider.of<AppState>(context).userEmail;
+    String? currDisplayName = Provider.of<AppState>(context).userDisplayName;
     // List<String> UserInfo = ['ΕΜΠ', 'ΗΜΜΥ', 'ΑΧΙΛΛΕΑΣ', '90 ΠΟΝΤΟΙ'];
 
     return SafeArea(
@@ -66,23 +74,23 @@ class HomepageScreen extends StatelessWidget {
                                                 onTapMyProfile(context);
                                               }),
                                           CustomElevatedButton(
-                                              height: 27.v,
-                                              width: 79.h,
-                                              text: "Sign out",
-                                              margin: EdgeInsets.only(left: 11.h),
-                                              buttonStyle: CustomButtonStyles.fillDeepOrange,
-                                              buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
-                                              onPressed: () => onPressedCreateAlert(
-                                                  context: context,
-                                                  title: "Sign Out",
-                                                  desc: "Are you sure?",
-                                                  type: AlertType.none,
-                                                onPressed: () async {
-                                                  // Perform logout
-                                                  await authService.signOut();
-                                                  Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
-                                                },
-                                              ),
+                                            height: 27.v,
+                                            width: 79.h,
+                                            text: "Sign out",
+                                            margin: EdgeInsets.only(left: 11.h),
+                                            buttonStyle: CustomButtonStyles.fillDeepOrange,
+                                            buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
+                                            onPressed: () => onPressedCreateAlert(
+                                              context: context,
+                                              title: "Sign Out",
+                                              desc: "Are you sure?",
+                                              type: AlertType.none,
+                                              onPressed: () async {
+                                                // Perform logout
+                                                await authService.signOut();
+                                                Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
+                                              },
+                                            ),
                                           ),
                                         ]))),
                                 SizedBox(height: 21.v),
@@ -101,17 +109,24 @@ class HomepageScreen extends StatelessWidget {
                                       IconButton(
                                         icon: const Icon(Icons.add_circle_outline),
                                         color: appTheme.black900,
-                                    onPressed: () => onTapInputTextAlert(
-                                        context: context, title: "Create Folder", icon: const Icon(Icons.folder),
-                                        labelText: 'Name the new folder', buttonText: "Create",
-                                        onPressed: () async {
-                                          await FirebaseFirestore.instance.collection('folders').add(<String, dynamic>{
-                                            'title': 'Example Document',
-                                            'content': 'This is an example document',
-                                            'userUid': currUid.hashCode
-                                          });
-                                          Navigator.pop(context); // todo make it more sophisticated
-                                        }),
+                                        onPressed: () => onTapInputTextAlert(
+                                            context: context,
+                                            title: "Create Folder",
+                                            icon: const Icon(Icons.folder),
+                                            labelText: 'Name the new folder',
+                                            buttonText: "Create",
+                                            onPressed: () async {
+                                              await FirebaseFirestore.instance
+                                                  .collection('folders')
+                                                  .add(<String, dynamic>{
+                                                'title': 'Example Document',
+                                                'content': 'This is an example document',
+                                                'userUid': currUid,
+                                                'userEmail': currEmail,
+                                                'userDisplayName': currDisplayName
+                                              });
+                                              Navigator.pop(context); // todo make it more sophisticated
+                                            }),
                                       ),
                                       // CreateFolderAlert(),
                                       Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900),
@@ -157,8 +172,7 @@ class HomepageScreen extends StatelessWidget {
         // margin: EdgeInsets.only(left: 61.h, right: 61.h, bottom: 27.v),
         decoration: AppDecoration.fillPrimary,
         child: Center(
-          child: Text("Contact us:    theTeam@mail.com",
-              style: CustomTextStyles.bodyLargeWhiteA700),
+          child: Text("Contact us:    theTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700),
         ));
   }
 

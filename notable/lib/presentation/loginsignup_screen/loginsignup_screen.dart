@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notable/routes/app_routes.dart';
 import 'package:notable/screens/homepage/homepage_screen.dart';
 import 'package:notable/services/auth_service.dart';
+import 'package:provider/provider.dart';
+
+import '../../app_state.dart';
 
 class LoginsignupScreen extends StatelessWidget {
   LoginsignupScreen({Key? key}) : super(key: key);
@@ -83,15 +87,17 @@ class LoginsignupScreen extends StatelessWidget {
   onTapLogin(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        Future currUid = AuthService().signIn(
+        User? currUser = await AuthService().signIn(
           emailController.text,
           passwordController.text,
         );
         // Navigate to the homepageScreen upon successful login
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomepageScreen(currUid: currUid))
-        );
+        if (currUser != null) {
+          Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        } else {
+          print('user was null');
+        }
+        Provider.of<AppState>(context, listen: false).setUser(currUser);
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
         // todo make the Forgot Password visible

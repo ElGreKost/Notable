@@ -1,42 +1,55 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:notable/app_state.dart';
+import 'package:provider/provider.dart';
 import '../core/utils/size_utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../theme/theme_helper.dart';
 
-void onPressedCreateAlert({required BuildContext context,
-  required String title,
-  required String desc,
-  required type,
-  required VoidCallback onPressed}) {
+void onPressedCreateAlert(
+    {required BuildContext context,
+    required String title,
+    required String desc,
+    required type,
+    required VoidCallback onPressed}) {
   Alert(
     context: context,
     type: type,
     title: title,
     desc: desc,
     buttons: [
-      DialogButton(onPressed: () {
+      DialogButton(
+          onPressed: () {
             Navigator.pop(context);
             onPressed();
-          }, width: 120.h, child: Text('Continue', style: theme.textTheme.bodyMedium))
+          },
+          width: 120.h,
+          child: Text('Continue', style: theme.textTheme.bodyMedium))
     ],
   ).show();
 }
 
-
 void onTapInputTextAlert(
-    {required BuildContext context, required String title, required Icon icon, required String labelText, required String buttonText, required VoidCallback onPressed}) {
+    {required BuildContext context,
+    required String title,
+    required Icon icon,
+    required String labelText,
+    required String buttonText,
+    required VoidCallback onPressed,
+    // required TextEditingController controller
+    }) {
   Alert(
     context: context,
     title: title,
     content: Column(
       children: <Widget>[
-        TextField(
+        TextFormField(
           decoration: InputDecoration(
             icon: icon,
             labelText: labelText,
           ),
+          // controller: controller,
         ),
       ],
     ),
@@ -52,89 +65,121 @@ void onTapInputTextAlert(
   ).show();
 }
 
-
-class CreateFolderDialog extends StatefulWidget {
-  const CreateFolderDialog({Key? key}) : super(key: key);
-
-  @override
-  State<CreateFolderDialog> createState() => _CreateFolderDialogState();
-}
-
-class _CreateFolderDialogState extends State<CreateFolderDialog> {
-  String? _folderName;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Create a folder'),
-      content: Form(
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                icon: const Icon(Icons.folder),
-                labelText: 'Folder Name',
-              ),
-              onChanged: (folderName) {
-                setState(() {
-                  _folderName = folderName;
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a folder name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                if (_folderName != null) {
-                  await FirebaseFirestore.instance.collection(_folderName!).doc('newDocumentName').set(<String, dynamic>{
-                    'title': 'Example Document',
-                    'content': 'This is an example document',
-                  });
-                  // Dismiss the dialog
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text(
-                'Create',
-                style: const TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ),
-          ],
+void creteFolderPopUp(context, controller, ) {
+  Alert(
+    context: context,
+    title: 'Create Folder',
+    content: Column(
+      children: <Widget>[
+        TextField(
+          decoration: const InputDecoration(icon: Icon(Icons.folder), labelText: 'Name'),
+          // controller: folderNameController,
         ),
-      ),
-    );
-  }
-}
-
-class CreateFolderAlert extends StatelessWidget {
-  const CreateFolderAlert({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        final folderName = await showDialog<String>(
-          context: context,
-          builder: (_) => CreateFolderDialog(),
-        );
-
-        if (folderName != null) {
-          // Create the new collection with the specified folder name
-          await FirebaseFirestore.instance.collection(folderName).doc('newDocumentName').set(<String, dynamic>{
+      ],
+    ),
+    buttons: [
+      DialogButton(
+        onPressed: () async {
+          await FirebaseFirestore.instance.collection('folders').add(<String, dynamic>{
             'title': 'Example Document',
             'content': 'This is an example document',
+            'userUid': Provider.of<AppState>(context).userUid
           });
-        }
-      },
-      child: Text(
-        'Create Folder',
-        style: const TextStyle(color: Colors.white, fontSize: 20),
-      ),
-    );
-  }
+          Navigator.pop(context); // todo make it more sophisticated
+        },
+        child: const Text(
+          'Create',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+      )
+    ],
+  ).show();
 }
+
+//
+// class CreateFolderDialog extends StatefulWidget {
+//   const CreateFolderDialog({Key? key}) : super(key: key);
+//
+//   @override
+//   State<CreateFolderDialog> createState() => _CreateFolderDialogState();
+// }
+//
+// class _CreateFolderDialogState extends State<CreateFolderDialog> {
+//   String? _folderName;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       title: Text('Create a folder'),
+//       content: Form(
+//         child: Column(
+//           children: [
+//             TextFormField(
+//               decoration: InputDecoration(
+//                 icon: const Icon(Icons.folder),
+//                 labelText: 'Folder Name',
+//               ),
+//               onChanged: (folderName) {
+//                 setState(() {
+//                   _folderName = folderName;
+//                 });
+//               },
+//               validator: (value) {
+//                 if (value == null || value.isEmpty) {
+//                   return 'Please enter a folder name';
+//                 }
+//                 return null;
+//               },
+//             ),
+//             const SizedBox(height: 16),
+//             ElevatedButton(
+//               onPressed: () async {
+//                 if (_folderName != null) {
+//                   await FirebaseFirestore.instance.collection(_folderName!).doc('newDocumentName').set(
+//                       <String, dynamic>{
+//                         'title': 'Example Document',
+//                         'content': 'This is an example document',
+//                       });
+//                   // Dismiss the dialog
+//                   Navigator.of(context).pop();
+//                 }
+//               },
+//               child: Text(
+//                 'Create',
+//                 style: const TextStyle(color: Colors.white, fontSize: 20),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class CreateFolderAlert extends StatelessWidget {
+//   const CreateFolderAlert({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ElevatedButton(
+//       onPressed: () async {
+//         final folderName = await showDialog<String>(
+//           context: context,
+//           builder: (_) => CreateFolderDialog(),
+//         );
+//
+//         if (folderName != null) {
+//           // Create the new collection with the specified folder name
+//           await FirebaseFirestore.instance.collection(folderName).doc('newDocumentName').set(<String, dynamic>{
+//             'title': 'Example Document',
+//             'content': 'This is an example document',
+//           });
+//         }
+//       },
+//       child: Text(
+//         'Create Folder',
+//         style: const TextStyle(color: Colors.white, fontSize: 20),
+//       ),
+//     );
+//   }
+// }

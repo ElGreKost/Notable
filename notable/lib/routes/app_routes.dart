@@ -33,7 +33,7 @@ class AppRoutes {
   //  and a Widget that is the page itself.
   static Map<String, WidgetBuilder> routes = {
     loginsignupScreen: (context) => LoginsignupScreen(),
-    homepageScreen: (context) => const HomepageScreen(),
+    homepageScreen: (context) => HomepageScreen(),
     cameraScreen: (context) => CameraScreen(),
     textpreviewPage: (context) => const TextPreviewPage(), // changed from page-container to page
     opennoteScreen: (context) => const OpennoteScreen(),

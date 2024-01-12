@@ -77,14 +77,14 @@ class LoginsignupScreen extends StatelessWidget {
                       Center(
                           child: TextButton(
                               onPressed: () {
-                                onTapInputTextAlert(
-                                  context: context,
-                                  title: 'Reset Password',
-                                  labelText: 'Email',
-                                  icon: const Icon(Icons.account_circle),
-                                  buttonText: 'Submit',
-                                  onPressed: () => Navigator.pop(context)
-                                );
+                                // onTapInputTextAlert(
+                                //   context: context,
+                                //   title: 'Reset Password',
+                                //   labelText: 'Email',
+                                //   icon: const Icon(Icons.account_circle),
+                                //   buttonText: 'Submit',
+                                //   onPressed: () => Navigator.pop(context)
+                                // );
                               },
                               child: Text("Forgot your password?",
                                   style: TextStyle(
