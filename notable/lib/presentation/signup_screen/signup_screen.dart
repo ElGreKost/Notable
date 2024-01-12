@@ -91,17 +91,27 @@ class SignupScreen extends StatelessWidget {
   onTapCreateAnAccount(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        await AuthService().signUp(
-          emailController.text,
-          passwordController.text,
-        );
-        // Navigate to the homepageScreen upon successful signup
-        Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        // Check if the email is already in use before signing up
+        bool emailExists = await AuthService().isEmailInUse(emailController.text);
+
+        if (emailExists) {
+          // Display an error message if the email is already in use
+          print('Email address is already in use');
+        } else {
+          // If the email is not in use, proceed with sign up
+          await AuthService().signUp(
+            emailController.text,
+            passwordController.text,
+          );
+          // Navigate to the homepageScreen upon successful signup
+          Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        }
       } catch (e) {
         // Handle signup errors (display error message or take appropriate action)
         print('Signup Error: $e');
       }
     }
   }
+
 }
 

@@ -3,9 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Create a new user account
+  // Check if email is already in use
+  Future<bool> isEmailInUse(String email) async {
+    try {
+      final methods = await _auth.fetchSignInMethodsForEmail(email);
+      return methods.isNotEmpty; // Email is in use if sign-in methods exist
+    } catch (e) {
+      print('Error checking email existence: $e');
+      throw ('An error occurred while checking email existence.');
+    }
+  }
+
   Future<void> signUp(String email, String password) async {
     try {
+      // Check if the email is already in use
+      bool emailExists = await isEmailInUse(email);
+
+      if (emailExists) {
+        throw ('The email address is already in use.');
+      }
+
+      // Continue with the sign-up process if the email is not in use
       await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -15,8 +33,6 @@ class AuthService {
       if (e is FirebaseAuthException) {
         if (e.code == 'weak-password') {
           throw ('Password is too weak. It should contain at least 6 characters.');
-        } else if (e.code == 'email-already-in-use') {
-          throw ('The email address is already in use.');
         } else {
           throw ('An error occurred during signup.');
         }
