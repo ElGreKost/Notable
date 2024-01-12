@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'widgets/breadcrumb.dart';
 import 'widgets/folder_list.dart';
@@ -100,15 +101,14 @@ class HomepageScreen extends StatelessWidget {
                                       IconButton(
                                         icon: const Icon(Icons.add_circle_outline),
                                         color: appTheme.black900,
-                                        onPressed: () {
-                                          onTapInputTextAlert(
-                                              context: context,
-                                              title: "Create a folder",
-                                              icon: const Icon(Icons.folder),
-                                              labelText: "Folder Name",
-                                              buttonText: "Create");
+                                        onPressed: () async {
+                                          await FirebaseFirestore.instance.collection('folderName').doc('newDocumentName').set(<String, dynamic>{
+                                            'title': 'Example Document',
+                                            'content': 'This is an example document',
+                                          });
                                         },
                                       ),
+                                      // CreateFolderAlert(),
                                       Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900),
                                       Icon(Icons.search_outlined, color: appTheme.black900)
                                     ])),
