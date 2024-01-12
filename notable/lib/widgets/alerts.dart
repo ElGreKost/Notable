@@ -26,7 +26,7 @@ void onPressedCreateAlert({required BuildContext context,
 
 
 void onTapInputTextAlert(
-    {required BuildContext context, required String title, required Icon icon, required String labelText, required String buttonText}) {
+    {required BuildContext context, required String title, required Icon icon, required String labelText, required String buttonText, required VoidCallback onPressed}) {
   Alert(
     context: context,
     title: title,
@@ -42,7 +42,7 @@ void onTapInputTextAlert(
     ),
     buttons: [
       DialogButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: onPressed,
         child: Text(
           buttonText,
           style: const TextStyle(color: Colors.white, fontSize: 20),

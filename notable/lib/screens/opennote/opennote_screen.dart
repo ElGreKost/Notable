@@ -15,9 +15,9 @@ class OpennoteScreen extends StatelessWidget {
       IconButton(icon: const Icon(Icons.share), onPressed: () {}, iconSize: 40),
       IconButton(icon: const Icon(Icons.edit_outlined), onPressed: () {}, iconSize: 40),
       IconButton(icon: const Icon(Icons.file_download_outlined), iconSize: 40
-          , onPressed: () {onTapInputTextAlert(
+          , onPressed: () => onTapInputTextAlert(
               context: context, title: "Select Folder", icon: const Icon(Icons.folder),
-              labelText: '', buttonText: "Save");}
+              labelText: '', buttonText: "Save", onPressed: () => Navigator.pop(context))
       ),
       IconButton(icon: const Icon(Icons.star_border_outlined), onPressed: () {}, iconSize: 40),
       IconButton(icon: const Icon(Icons.attach_file), onPressed: () {}, iconSize: 40),];

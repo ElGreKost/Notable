@@ -83,6 +83,7 @@ class LoginsignupScreen extends StatelessWidget {
                                   labelText: 'Email',
                                   icon: const Icon(Icons.account_circle),
                                   buttonText: 'Submit',
+                                  onPressed: () => Navigator.pop(context)
                                 );
                               },
                               child: Text("Forgot your password?",

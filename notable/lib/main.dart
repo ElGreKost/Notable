@@ -11,21 +11,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  const FirebaseOptions firebaseOptions = FirebaseOptions(
-    apiKey: 'AIzaSyC_t7R-Bx1iqBoAmsfNhRaJj4s0wyEBHG8',
-    authDomain: 'notabledb.firebaseapp.com',
-    projectId: 'notabledb',
-    storageBucket: 'notabledb.appspot.com',
-    messagingSenderId: '689719737579',
-    appId: '1:689719737579:android:2542b3d80c245ce19452ae',
-    //measurementId: 'your-measurement-id',
-  );
-
-
-  await Firebase.initializeApp(options: firebaseOptions,); // Initialize Firebase
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+  // const FirebaseOptions firebaseOptions = FirebaseOptions(
+  //   apiKey: 'AIzaSyC_t7R-Bx1iqBoAmsfNhRaJj4s0wyEBHG8',
+  //   authDomain: 'notabledb.firebaseapp.com',
+  //   projectId: 'notabledb',
+  //   storageBucket: 'notabledb.appspot.com',
+  //   messagingSenderId: '689719737579',
+  //   appId: '1:689719737579:android:2542b3d80c245ce19452ae',
+  //   //measurementId: 'your-measurement-id',
+  // );
 
   ///Please update theme as per your need if required.
   // ThemeHelper().changeTheme('primary');
