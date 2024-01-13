@@ -109,14 +109,21 @@ class HomepageScreen extends StatelessWidget {
                                       IconButton(
                                         icon: const Icon(Icons.add_circle_outline),
                                         color: appTheme.black900,
-                                        onPressed: () => onTapInputTextAlert(
-                                            context: context,
-                                            title: 'Create Folder',
-                                            icon: const Icon(Icons.folder),
-                                            labelText: 'Name the new folder',
-                                            buttonText: 'Create',
-                                          userUid: currUid ?? 'was null'
-                                        ),
+                                          onPressed: () async {
+
+
+                                            await FirebaseFirestore.instance
+                                                .collection('users') // Reference to 'users' collection
+                                                .doc(currUid) // Reference to the specific user's document
+                                                .collection('folders') // Reference to 'folders' subcollection
+                                                .add({
+                                              'title': 'Example Document',
+                                              'content': 'This is an example document',
+                                              'userUid': currUid // Storing the user's UID for reference
+                                            });
+
+
+                                          }
                                       ),
                                       // CreateFolderAlert(),
                                       Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900),

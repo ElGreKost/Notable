@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notable/routes/app_routes.dart';
@@ -99,6 +100,9 @@ class SignupScreen extends StatelessWidget {
           emailController.text,
           passwordController.text,
         );
+        await FirebaseFirestore.instance.collection('users').add(<String, dynamic>{
+          'email': emailController.text
+        });
         Provider.of<AppState>(context,listen: false).setUser(currUser);
         Navigator.pushNamed(context, AppRoutes.homepageScreen);
       } catch (e) {
