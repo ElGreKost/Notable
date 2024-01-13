@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notable/routes/app_routes.dart';
@@ -91,13 +94,32 @@ class LoginsignupScreen extends StatelessWidget {
           emailController.text,
           passwordController.text,
         );
-        // Navigate to the homepageScreen upon successful login
         if (currUser != null) {
+          //String? currUid = Provider.of<AppState>(context).userUid;
+          String userId = currUser.uid;
+          var foldersSnapshot = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .collection('folders')
+              .get();
+
+          List<Map<String, dynamic>> folders = [];
+          for (var doc in foldersSnapshot.docs) {
+            folders.add(doc.data() as Map<String, dynamic>);
+          }
+          // Print the contents of the folders list
+          print("Folders: ");
+          for (var folder in folders) {
+            print(folder.toString());
+          }
+
+          // Use folders as needed (e.g., update AppState or UI)
+          // Provider.of<AppState>(context, listen: false).setFolders(folders);
           Navigator.pushNamed(context, AppRoutes.homepageScreen);
+          Provider.of<AppState>(context, listen: false).setUser(currUser);
         } else {
           print('user was null');
         }
-        Provider.of<AppState>(context, listen: false).setUser(currUser);
       } catch (e) {
         // Handle login errors (display error message or take appropriate action)
         // todo make the Forgot Password visible
@@ -106,7 +128,9 @@ class LoginsignupScreen extends StatelessWidget {
     }
   }
 
+
   onTapCreateAnAccount(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.signupScreen);
+    }
   }
-}
+
