@@ -111,7 +111,7 @@ class HomepageScreen extends StatelessWidget {
                                         color: appTheme.black900,
                                           onPressed: () async {
 
-
+                                          //add a new folder under the user that has logged in
                                             await FirebaseFirestore.instance
                                                 .collection('users') // Reference to 'users' collection
                                                 .doc(currUid) // Reference to the specific user's document
@@ -121,6 +121,64 @@ class HomepageScreen extends StatelessWidget {
                                               'content': 'This is an example document',
                                               'userUid': currUid // Storing the user's UID for reference
                                             });
+                                            ----------------------------------------------------------------------------------------------------------
+                                            //delete a specific folder
+                                            onPressed: () async {
+                                              String folderNameToDelete = 'Folder Name'; // Replace with the name of the folder you want to delete
+
+                                              try {
+                                                // Reference to the user's 'folders' subcollection
+                                                var folders = FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(currUid)
+                                                    .collection('folders');
+
+                                                // Query to find the specific folder by name
+                                                var querySnapshot = await folders
+                                                    .where('title', isEqualTo: folderNameToDelete)
+                                                    .get();
+
+                                                // Loop through the query results and delete each folder
+                                                for (var doc in querySnapshot.docs) {
+                                                  await doc.reference.delete();
+                                                }
+
+                                                print('Folder deleted successfully.');
+                                              } catch (e) {
+                                                print('Error deleting folder: $e');
+                                              }
+                                            };
+                                            ----------------------------------------------------------------------------------------------------
+                                            //rename the folder
+                                            onPressed: () async {
+                                            String oldFolderName = 'Old Folder Name'; // Replace with the current name of the folder
+                                            String newFolderName = 'New Folder Name'; // Replace with the new name for the folder
+
+                                            try {
+                                            // Reference to the user's 'folders' subcollection
+                                            var folders = FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(currUid)
+                                                .collection('folders');
+
+                                            // Query to find the specific folder by the old name
+                                            var querySnapshot = await folders
+                                                .where('title', isEqualTo: oldFolderName)
+                                                .get();
+
+                                            // Loop through the query results and update each folder's name
+                                            for (var doc in querySnapshot.docs) {
+                                            await doc.reference.update({'title': newFolderName});
+                                            }
+
+                                            print('Folder renamed successfully.');
+                                            } catch (e) {
+                                            print('Error renaming folder: $e');
+                                            }
+                                            };
+                                            -----------------------------------------------------------------------------------------------------------
+
+
 
 
                                           }
