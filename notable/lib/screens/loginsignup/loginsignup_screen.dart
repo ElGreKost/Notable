@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import '../../widgets/alerts.dart';
 
 // ignore_for_file: must_be_immutable
-class LoginsignupScreen extends StatelessWidget {
-  LoginsignupScreen({Key? key}) : super(key: key);
+class LoginsignupScreen1 extends StatelessWidget {
+  LoginsignupScreen1({Key? key}) : super(key: key);
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  // TODO understand GlobalKeys Usage
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override

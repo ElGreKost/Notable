@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:notable/core/app_export.dart';
 import 'package:notable/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -13,17 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // const FirebaseOptions firebaseOptions = FirebaseOptions(
-  //   apiKey: 'AIzaSyC_t7R-Bx1iqBoAmsfNhRaJj4s0wyEBHG8',
-  //   authDomain: 'notabledb.firebaseapp.com',
-  //   projectId: 'notabledb',
-  //   storageBucket: 'notabledb.appspot.com',
-  //   messagingSenderId: '689719737579',
-  //   appId: '1:689719737579:android:2542b3d80c245ce19452ae',
-  //   //measurementId: 'your-measurement-id',
-  // );
 
-  ///Please update theme as per your need if required.
   // ThemeHelper().changeTheme('primary');
   runApp(const MyApp());
 }
@@ -38,11 +29,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true
-        ),
-        initialRoute: AppRoutes.loginsignupScreen,
+        theme: theme,
+        initialRoute: AppRoutes.loginsignupScreen1,
         routes: AppRoutes.routes,
       ),
     );
