@@ -75,32 +75,24 @@ class SignupScreen extends StatelessWidget {
       ),
     );
   }
-  // todo delete_me???
-  onTapLogin(BuildContext context) async {
-    if (_formKey.currentState?.validate() ?? false) {
-      try {
-        await AuthService().signIn(
-          emailController.text,
-          passwordController.text,
-        );
-        // Navigate to the homepageScreen upon successful login
-        Navigator.pushNamed(context, AppRoutes.homepageScreen);
-      } catch (e) {
-        // Handle login errors (display error message or take appropriate action)
-        print('Login Error: $e');
-      }
-    }
-  }
 
   onTapCreateAnAccount(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        User? currUser = await AuthService().signUp(
-          emailController.text,
-          passwordController.text,
-        );
-        Provider.of<AppState>(context,listen: false).setUser(currUser);
-        Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        // Check if the email is already in use before signing up
+        bool emailExists = await AuthService().isEmailInUse(emailController.text);
+
+        if (emailExists) {
+          // Display an error message if the email is already in use
+          print('Email address is already in use');
+        } else {
+          User? currUser = await AuthService().signUp(
+            emailController.text,
+            passwordController.text,
+          );
+          Provider.of<AppState>(context, listen: false).setUser(currUser);
+          Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        }
       } catch (e) {
         // Handle signup errors (display error message or take appropriate action)
         print('Signup Error: $e');
