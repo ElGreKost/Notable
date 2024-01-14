@@ -15,18 +15,20 @@ class FoldersListView extends StatelessWidget {
         separatorBuilder: (context, index) => SizedBox(height: 24.v),
         itemCount: folderNames.length,
         itemBuilder: (context, index) {
-          return foldersItemWidget(folderNames[index]);
+          return folderListTile(folderNames[index]);
         },
       ),
     );
   }
+}
 
-  Widget foldersItemWidget(folderName) => ListTile(
+Widget folderListTile(folderName) => Container(
+      decoration: BoxDecoration(color: theme.colorScheme.onPrimaryContainer, borderRadius: BorderRadius.circular(15)),
+      child: ListTile(
         leading: Icon(Icons.delete_outline, color: appTheme.black900),
         title: Center(
             child: Text(folderName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),
         trailing: Icon(Icons.file_download_outlined, color: appTheme.black900),
-        tileColor: theme.colorScheme.onPrimaryContainer,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      );
-}
+      ),
+    );

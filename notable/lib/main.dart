@@ -31,19 +31,18 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AppState>(
       create: (BuildContext context) => AppState(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+          useMaterial3: true
         ),
         initialRoute: AppRoutes.loginsignupScreen,
-        // static Map<String, WidgetBuilder> for connections str->Widget
         routes: AppRoutes.routes,
       ),
     );

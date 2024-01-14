@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:notable/core/utils/size_utils.dart';
 
+import '../../theme/theme_helper.dart';
 import '../textpreview/textpreview_page.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -26,12 +27,13 @@ class _cameraScreenState extends State<CameraScreen> {
     fetchGalleryImages();
   }
 
-  // Fetch images from the gallery
   Future<void> fetchGalleryImages() async {
-    final List<XFile> pickedFiles = await ImagePicker().pickMultiImage();
-    setState(() {
-      galleryImages = pickedFiles;
-    });
+    final List<XFile>? pickedFiles = await ImagePicker().pickMultiImage();
+    if (pickedFiles != null) {
+      setState(() {
+        galleryImages = pickedFiles;
+      });
+    }
   }
 
   Future<void> initializeCamera() async {
@@ -51,11 +53,14 @@ class _cameraScreenState extends State<CameraScreen> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    // Check if camera is initialized
     if (cameraController == null || !cameraController!.value.isInitialized) {
       return Container(); // or a loader
     }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Focus your Note'),
@@ -66,13 +71,29 @@ class _cameraScreenState extends State<CameraScreen> {
           CameraPreview(cameraController!),
           galleryImages != null ? buildGalleryView() : const SizedBox(height: 100),
         ],
-      ), // Display the camera preview
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Implement your camera shot function
-          onTapCamera(context);
-        },
-        child: const Icon(Icons.camera),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.fromLTRB(16.h, 16.v, 16.h, 24.v),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Placeholder for alignment
+            SizedBox(width: 48.h),
+            FloatingActionButton(
+              backgroundColor: theme.colorScheme.onPrimaryContainer,
+              onPressed: () => onTapCamera(context), // Bigger camera icon
+              elevation: 4.0,
+              child: Icon(Icons.camera, size: 36.h),
+            ),
+            FloatingActionButton(
+              backgroundColor: theme.colorScheme.onPrimaryContainer,
+              onPressed: () => fetchGalleryImages(), // Standard size
+              mini: true,
+              child: const Icon(Icons.photo_library), // Makes the button a bit smaller
+            ),
+          ],
+        ),
       ),
     );
   }
