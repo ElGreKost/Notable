@@ -1,11 +1,10 @@
-import '../../routes/app_routes.dart';
-// import '../../widgets/app_bar/custom_app_bar.dart';
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+import '../../routes/app_routes.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -22,15 +21,6 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
     initializeCamera();
-    fetchGalleryImages();
-  }
-
-  // Fetch images from the gallery
-  Future<void> fetchGalleryImages() async {
-    final List<XFile>? pickedFiles = await ImagePicker().pickMultiImage();
-    setState(() {
-      galleryImages = pickedFiles;
-    });
   }
 
   Future<void> initializeCamera() async {
@@ -57,18 +47,21 @@ class _CameraScreenState extends State<CameraScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Focus your Note'),
+        title: const Text('Focus your Note'),
         centerTitle: true,
       ),
       body: Column(
         children: [
           CameraPreview(cameraController!),
-          galleryImages != null ? buildGalleryView() : SizedBox(height: 100),
+          galleryImages != null ? buildGalleryView() : const SizedBox(height: 100),
+          ElevatedButton(
+            onPressed: () => pickImageFromGallery(),
+            child: Text('Pick Image from Gallery'),
+          ),
         ],
-      ), // Display the camera preview
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Implement your camera shot function
           onTapCamera(context);
         },
         child: Icon(Icons.camera),
@@ -94,16 +87,24 @@ class _CameraScreenState extends State<CameraScreen> {
   onTapCamera(BuildContext context) async {
     try {
       final image = await cameraController!.takePicture();
-      await processImageForOCR(image.path);
+      await processImageForOcr(image.path);
     } catch (e) {
       print(e); // Handle error
     }
     Navigator.pushNamed(context, AppRoutes.textpreviewPage);
   }
 
-  Future<void> processImageForOCR(String imagePath) async {
+  Future<void> pickImageFromGallery() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      await processImageForOcr(image.path);
+    }
+  }
+
+  Future<void> processImageForOcr(String imagePath) async {
     final inputImage = InputImage.fromFilePath(imagePath);
-    final textRecognizer = GoogleMlKit.vision.textRecognizer();
+    final textRecognizer = TextRecognizer();
     final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
 
     for (TextBlock block in recognizedText.blocks) {
@@ -113,6 +114,5 @@ class _CameraScreenState extends State<CameraScreen> {
         print(line.text);
       }
     }
-    textRecognizer.close();
   }
 }

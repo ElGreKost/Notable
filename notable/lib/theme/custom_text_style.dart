@@ -43,7 +43,7 @@ class CustomTextStyles {
   static get titleSmallRobotoWhiteA700 =>
       theme.textTheme.titleSmall!.roboto.copyWith(
         color: appTheme.whiteA700,
-        fontSize: 14.fSize,
+        fontSize: 12.fSize,
         fontWeight: FontWeight.w500,
       );
 }

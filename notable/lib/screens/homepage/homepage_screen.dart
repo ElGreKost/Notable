@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app_state.dart';
 import 'widgets/breadcrumb.dart';
 import 'widgets/folder_list.dart';
-import 'widgets/user_info_menu.dart';
+import 'widgets/header.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/alerts.dart';
@@ -26,102 +26,39 @@ class HomepageScreen extends StatelessWidget {
     String? currUid = Provider.of<AppState>(context).userUid;
     String? currEmail = Provider.of<AppState>(context).userEmail;
     String? currDisplayName = Provider.of<AppState>(context).userDisplayName;
-    // List<String> UserInfo = ['ΕΜΠ', 'ΗΜΜΥ', 'ΑΧΙΛΛΕΑΣ', '90 ΠΟΝΤΟΙ'];
 
     return SafeArea(
         child: Scaffold(
             body: SizedBox(
                 width: double.maxFinite,
-                child: Row(
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(children: [
-                        Container(
-                            width: 120.h,
-                            // padding: EdgeInsets.symmetric(horizontal: 4.h),
-                            decoration: AppDecoration.fillPrimary,
-                            child: const HomePageLogo()),
-                        // Container(
-                        //     padding: EdgeInsets.symmetric(vertical: 12.v),
-                        //     decoration: AppDecoration.fillPrimary,
-                        //     child: UserInfoSideMenu(texts: UserInfo))
-                      ]),
+                      Header(context),
                       Expanded(
                           child: Padding(
-                              padding: EdgeInsets.only(bottom: 8.v),
+                              padding: EdgeInsets.symmetric(vertical: 24.v, horizontal: 40),
                               child: Column(children: [
-                                Container(
-                                    padding: EdgeInsets.fromLTRB(8.h, 8.v, 32.h, 8.v),
-                                    decoration: AppDecoration.fillPrimary,
-                                    child: UserInfoHeader(
-                                      name: "Αχιλλέας\nΜπραϊμάκης",
-                                      imagePath: ImageConstant.imgUserImage, // Replace with your image path
-                                    )),
-                                SizedBox(height: 5.v),
-                                Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                        padding: EdgeInsets.only(right: 9.h),
-                                        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                                          CustomElevatedButton(
-                                              height: 27.v,
-                                              width: 80.h,
-                                              text: "My profile",
-                                              buttonStyle: CustomButtonStyles.fillDeepOrange,
-                                              buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
-                                              onPressed: () {
-                                                onTapMyProfile(context);
-                                              }),
-                                          CustomElevatedButton(
-                                            height: 27.v,
-                                            width: 79.h,
-                                            text: "Sign out",
-                                            margin: EdgeInsets.only(left: 11.h),
-                                            buttonStyle: CustomButtonStyles.fillDeepOrange,
-                                            buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
-                                            onPressed: () => onPressedCreateAlert(
-                                              context: context,
-                                              title: "Sign Out",
-                                              desc: "Are you sure?",
-                                              type: AlertType.none,
-                                              onPressed: () async {
-                                                // Perform logout
-                                                await authService.signOut();
-                                                Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
-                                              },
-                                            ),
-                                          ),
-                                        ]))),
-                                SizedBox(height: 21.v),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                                  child: GradientBreadcrumb(
-                                    breadcrumbs: const ['ΕΜΠ', 'ΗΜΜΥ', '4οΕτος', 'Χειμερίνο'],
-                                    onTapBreadcrumb: (index) {},
-                                  ),
+                                GradientBreadcrumb(
+                                  breadcrumbs: const ['ΕΜΠ', 'ΗΜΜΥ', '4οΕτος', 'Χειμερίνο'],
+                                  onTapBreadcrumb: (index) {},
                                 ),
                                 SizedBox(height: 21.v),
-                                Container(
-                                    width: 234.h,
-                                    margin: EdgeInsets.symmetric(horizontal: 19.h),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.add_circle_outline),
-                                        color: appTheme.black900,
-                                        onPressed: () => onTapInputTextAlert(
-                                            context: context,
-                                            title: 'Create Folder',
-                                            icon: const Icon(Icons.folder),
-                                            labelText: 'Name the new folder',
-                                            buttonText: 'Create',
-                                          userUid: currUid ?? 'was null'
-                                        ),
-                                      ),
-                                      // CreateFolderAlert(),
-                                      Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900),
-                                      Icon(Icons.search_outlined, color: appTheme.black900)
-                                    ])),
+                                ListTile(
+                                  leading: IconButton(
+                                      icon: const Icon(Icons.add_circle_outline),
+                                      color: appTheme.black900,
+                                      onPressed: () => onTapInputTextAlert(
+                                          context: context,
+                                          title: 'Create Folder',
+                                          icon: const Icon(Icons.folder),
+                                          labelText: 'Name the new folder',
+                                          buttonText: 'Create',
+                                          userUid: currUid ?? 'was null')),
+                                  title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
+                                  trailing: Icon(Icons.search_outlined, color: appTheme.black900),
+                                ),
                                 SizedBox(height: 31.v),
                                 const FoldersListView(
                                   folderNames: [
@@ -146,35 +83,80 @@ class HomepageScreen extends StatelessWidget {
                                               height: 65.adaptSize,
                                               width: 65.adaptSize,
                                               margin: EdgeInsets.only(left: 21.h),
-                                              onTap: () {
-                                                onTapImgUser(context);
-                                              })
+                                              onTap: () => Navigator.pushNamed(context, AppRoutes.cameraScreen))
                                         ])))
                               ])))
                     ])),
             bottomNavigationBar: _buildFooter(context)));
   }
 
+  Row Header(BuildContext context) {
+    return Row(children: [
+      Container(width: 120.h, decoration: AppDecoration.fillPrimary, child: const HomePageLogo()),
+      Expanded(
+        child: Column(children: [
+          Container(
+              padding: EdgeInsets.fromLTRB(8.h, 8.v, 32.h, 8.v),
+              decoration: AppDecoration.fillPrimary,
+              child: userInfoHeader(name: "Αχιλλέας\nΜπραϊμάκης", imagePath: ImageConstant.imgUserImage)),
+          SizedBox(height: 5.v),
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: Align(
+                alignment: Alignment.centerRight, child: myprofileSingoutButtons(context: context, maxWidth: 200.h)),
+          ),
+        ]),
+      )
+    ]);
+  }
+
+  Widget myprofileSingoutButtons({context, maxWidth}) {
+    var myprofiileButton = CustomElevatedButton(
+        height: 27.0.h,
+        width: 80.0.v,
+        text: "My profile",
+        buttonStyle: CustomButtonStyles.fillDeepOrange,
+        buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.myProfileScreen));
+    var singoutButton = CustomElevatedButton(
+      height: 27.0.h,
+      width: 79.0.v,
+      text: "Sign out",
+      margin: EdgeInsets.only(left: 8.0.h),
+      buttonStyle: CustomButtonStyles.fillDeepOrange,
+      buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
+      onPressed: () => onPressedCreateAlert(
+          context: context,
+          title: "Sign Out",
+          desc: "Are you sure?",
+          type: AlertType.none,
+          onPressed: () async {
+            // Perform logout
+            await authService.signOut();
+            Navigator.pushNamed(context, AppRoutes.loginsignupScreen);
+          }),
+    );
+    return SizedBox(
+      width: maxWidth,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: myprofiileButton,
+          ),
+          Expanded(
+            child: singoutButton,
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Section Widget
-  Widget _buildFooter(BuildContext context) {
-    return Container(
-        height: 40.v,
-        // margin: EdgeInsets.only(left: 61.h, right: 61.h, bottom: 27.v),
-        decoration: AppDecoration.fillPrimary,
-        child: Center(
-          child: Text("Contact us:    theTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700),
-        ));
-  }
-
-  /// Navigates to the myProfileScreen when the action is triggered.
-  onTapMyProfile(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.myProfileScreen);
-  }
-
-  /// Navigates to the cameraUiIossixteenScreen when the action is triggered.
-  onTapImgUser(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.cameraScreen);
-  }
+  Widget _buildFooter(BuildContext context) => Container(
+      height: 40.v,
+      decoration: AppDecoration.fillPrimary,
+      child: Center(child: Text("Contact us:    theTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700)));
 }
 
 class HomePageLogo extends StatelessWidget {

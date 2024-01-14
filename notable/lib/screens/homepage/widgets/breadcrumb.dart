@@ -44,8 +44,6 @@ class GradientBreadcrumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.all(8.0),
@@ -54,9 +52,9 @@ class GradientBreadcrumb extends StatelessWidget {
           begin: const Alignment(0, 0.5),
           end: const Alignment(1, 0.5),
           colors: [
-            theme.colorScheme.primary,
-            appTheme.teal2007c,
-            theme.colorScheme.secondaryContainer,
+            // theme.colorScheme.onPrimaryContainer,
+            theme.colorScheme.onPrimaryContainer,            // appTheme.teal2007c,
+            appTheme.whiteA700,
           ],
         ),
         borderRadius: BorderRadius.circular(30),
