@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+/*// ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -110,3 +110,4 @@ class LoginsignupScreen extends StatelessWidget {
     Navigator.pushNamed(context, AppRoutes.signupScreen);
   }
 }
+*/

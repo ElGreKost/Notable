@@ -10,8 +10,8 @@ import '../../app_state.dart';
 import 'package:provider/provider.dart';
 
 // ignore_for_file: must_be_immutable
-class LoginsignupScreen1 extends StatelessWidget {
-  LoginsignupScreen1({Key? key}) : super(key: key);
+class SignupScreen extends StatelessWidget {
+  SignupScreen({Key? key}) : super(key: key);
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -32,11 +32,11 @@ class LoginsignupScreen1 extends StatelessWidget {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Align(
                           alignment: Alignment.center,
-                          child: Text("Welcome to Notable", style: theme.textTheme.displaySmall)),
+                          child: Text("Register to Notable", style: theme.textTheme.displaySmall)),
                       Container(
                           width: 288.h,
                           margin: EdgeInsets.only(left: 20.h, right: 31.h),
-                          child: Text("Login/Create an account to enjoy all the services without any ads for free!",
+                          child: Text("Create your very own account to enjoy all the services without any ads for free!",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
@@ -61,31 +61,21 @@ class LoginsignupScreen1 extends StatelessWidget {
                           )),
                       SizedBox(height: 8.v),
                       CustomElevatedButton(
-                          text: "Login",
+                          text: "Create your Notable account",
                           margin: EdgeInsets.only(left: 29.h, right: 39.h),
                           onPressed: () {
-                            onTapLogin(context);
+                            onTapCreateAnAccount(context);
                           },
                           alignment: Alignment.center),
-                      Center(
-                          child: TextButton(
-                              onPressed: () {
-                                onTapCreateAnAccount(context);
-                              },
-                              child: Text("Create an account",
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor, // Adjust the color as needed
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.fSize, // Adjust the font size as needed
-                                  )))),
+
                       Center(
                           child: TextButton(
                               onPressed: () =>onTapForgotPasswordAlert(
-                                  context: context,
-                                  title: 'Forgot Password',
-                                  icon: const Icon(Icons.mail_outline),
-                                  labelText: 'Enter your email',
-                                  buttonText: 'Send',),
+                                context: context,
+                                title: 'Forgot Password',
+                                icon: const Icon(Icons.mail_outline),
+                                labelText: 'Enter your email',
+                                buttonText: 'Send',),
                               child: Text("Forgot your password?",
                                   style: TextStyle(
                                     color: Colors.blue, // Adjust the color as needed
@@ -94,31 +84,30 @@ class LoginsignupScreen1 extends StatelessWidget {
                     ])))));
   }
 
-  /// Navigates to the homepageScreen when the action is triggered.
-  onTapLogin(BuildContext context) async {
-    if (_formKey.currentState?.validate() ?? false) {
-      try {
-        User? currUser = await AuthService().signIn(
-          emailController.text,
-          passwordController.text,
-        );
-        // Navigate to the homepageScreen upon successful login
-        if (currUser != null) {
-          Navigator.pushNamed(context, AppRoutes.homepageScreen);
-        } else {
-          print('user was null');
-        }
-        Provider.of<AppState>(context, listen: false).setUser(currUser);
-      } catch (e) {
-        // Handle login errors (display error message or take appropriate action)
-        // todo make the Forgot Password visible
-        print('Login Error: $e');
-      }
-    }
-  }
+
 
   /// Navigates to the createAccountScreen when the action is triggered.
-  onTapCreateAnAccount(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.signupScreen);
+  onTapCreateAnAccount(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        // Check if the email is already in use before signing up
+        bool emailExists = await AuthService().isEmailInUse(emailController.text);
+
+        if (emailExists) {
+          // Display an error message if the email is already in use
+          print('Email address is already in use');
+        } else {
+          User? currUser = await AuthService().signUp(
+            emailController.text,
+            passwordController.text,
+          );
+          Provider.of<AppState>(context, listen: false).setUser(currUser);
+          Navigator.pushNamed(context, AppRoutes.homepageScreen);
+        }
+      } catch (e) {
+        // Handle signup errors (display error message or take appropriate action)
+        print('Signup Error: $e');
+      }
+    }
   }
 }

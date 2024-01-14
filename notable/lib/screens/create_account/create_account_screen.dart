@@ -6,6 +6,8 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_floating_text_field.dart';
 import '../../widgets/custom_phone_number.dart';
+import 'package:notable/routes/app_routes.dart';
+
 
 // ignore_for_file: must_be_immutable
 class CreateAccountScreen extends StatelessWidget {
