@@ -17,7 +17,7 @@ Widget coursesHeader(BuildContext context, double horizontalMargin) {
           icon: const Icon(Icons.add_circle_outline),
           color: appTheme.black900,
           onPressed: () =>
-              onTapInputTextAlert(
+              onTapInsertFolderAlert(
                   context: context,
                   title: 'Create Folder',
                   icon: const Icon(Icons.folder),

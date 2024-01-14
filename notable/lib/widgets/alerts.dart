@@ -30,7 +30,7 @@ void onPressedCreateAlert(
   ).show();
 }
 
-void onTapInputTextAlert({
+void onTapInsertFolderAlert({
   required BuildContext context,
   required String title,
   required Icon icon,
