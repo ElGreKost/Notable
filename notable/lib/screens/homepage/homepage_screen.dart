@@ -36,56 +36,58 @@ class HomepageScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Header(context),
+                      SizedBox(height: 16.v),
                       Expanded(
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 24.v, horizontal: 40),
-                              child: Column(children: [
-                                GradientBreadcrumb(
-                                  breadcrumbs: const ['ΕΜΠ', 'ΗΜΜΥ', '4οΕτος', 'Χειμερίνο'],
-                                  onTapBreadcrumb: (index) {},
-                                ),
-                                SizedBox(height: 21.v),
-                                ListTile(
-                                  leading: IconButton(
-                                      icon: const Icon(Icons.add_circle_outline),
-                                      color: appTheme.black900,
-                                      onPressed: () => onTapInputTextAlert(
-                                          context: context,
-                                          title: 'Create Folder',
-                                          icon: const Icon(Icons.folder),
-                                          labelText: 'Name the new folder',
-                                          buttonText: 'Create',
-                                          userUid: currUid ?? 'was null')),
-                                  title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
-                                  trailing: Icon(Icons.search_outlined, color: appTheme.black900),
-                                ),
-                                SizedBox(height: 31.v),
-                                const FoldersListView(
-                                  folderNames: [
-                                    'ΑΛΛΗΛΕΠΊΔΡΑΣΗ',
-                                    'ΗΛΕΚΤΡΟΛΟΓΙΚΟ ΣΧΕΔΙΟ',
-                                    'ΡΟΜΠΟΤΙΚΗ 1',
-                                    'ΝΕΥΡΟΑΣΑΦΉΣ ΈΛΕΓΧΟΣ',
-                                    'ΑΛΓΟΡΙΘΜΟΙ',
-                                    "ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΎ",
-                                    'ΜΗΧΑΝΙΚΗ ΜΑΘΗΣΗ'
-                                  ],
-                                ),
-                                SizedBox(height: 24.v),
-                                Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                        padding: EdgeInsets.only(right: 9.h),
-                                        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                                          Icon(Icons.file_upload_outlined, color: appTheme.black900),
-                                          CustomImageView(
-                                              imagePath: ImageConstant.imgCam,
-                                              height: 65.adaptSize,
-                                              width: 65.adaptSize,
-                                              margin: EdgeInsets.only(left: 21.h),
-                                              onTap: () => Navigator.pushNamed(context, AppRoutes.cameraScreen))
-                                        ])))
-                              ])))
+                        child: Padding(
+                            padding: EdgeInsets.fromLTRB(40.h, 0, 40.h, 24.v),
+                            child: Column(children: [
+                              GradientBreadcrumb(
+                                breadcrumbs: const ['ΕΜΠ', 'ΗΜΜΥ', '4οΕτος', 'Χειμερίνο'],
+                                onTapBreadcrumb: (index) {},
+                              ),
+                              SizedBox(height: 21.v),
+                              ListTile(
+                                leading: IconButton(
+                                    icon: const Icon(Icons.add_circle_outline),
+                                    color: appTheme.black900,
+                                    onPressed: () => onTapInputTextAlert(
+                                        context: context,
+                                        title: 'Create Folder',
+                                        icon: const Icon(Icons.folder),
+                                        labelText: 'Name the new folder',
+                                        buttonText: 'Create',
+                                        userUid: currUid ?? 'was null')),
+                                title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
+                                trailing: Icon(Icons.search_outlined, color: appTheme.black900),
+                              ),
+                              SizedBox(height: 31.v),
+                              FoldersListView(
+                                folderNames: [
+                                  'ΑΛΛΗΛΕΠΊΔΡΑΣΗ',
+                                  'ΗΛΕΚΤΡΟΛΟΓΙΚΟ ΣΧΕΔΙΟ',
+                                  'ΡΟΜΠΟΤΙΚΗ 1',
+                                  'ΝΕΥΡΟΑΣΑΦΉΣ ΈΛΕΓΧΟΣ',
+                                  'ΑΛΓΟΡΙΘΜΟΙ',
+                                  'ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΎ',
+                                  'ΜΗΧΑΝΙΚΗ ΜΑΘΗΣΗ'
+                                ],
+                              ),
+                              SizedBox(height: 24.v),
+                              Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                      padding: EdgeInsets.only(right: 9.h),
+                                      child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                                        Icon(Icons.file_upload_outlined, color: appTheme.black900),
+                                        CustomImageView(
+                                            imagePath: ImageConstant.imgCam,
+                                            height: 65.adaptSize,
+                                            width: 65.adaptSize,
+                                            margin: EdgeInsets.only(left: 21.h),
+                                            onTap: () => Navigator.pushNamed(context, AppRoutes.cameraScreen))
+                                      ])))
+                            ])),
+                      )
                     ])),
             bottomNavigationBar: _buildFooter(context)));
   }
@@ -103,7 +105,7 @@ class HomepageScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: Align(
-                alignment: Alignment.centerRight, child: myprofileSingoutButtons(context: context, maxWidth: 200.h)),
+                alignment: Alignment.centerRight, child: myprofileSingoutButtons(context: context, maxWidth: 220.h)),
           ),
         ]),
       )
@@ -114,7 +116,7 @@ class HomepageScreen extends StatelessWidget {
     var myprofiileButton = CustomElevatedButton(
         height: 27.0.h,
         width: 80.0.v,
-        text: "My profile",
+        text: "Profile",
         buttonStyle: CustomButtonStyles.fillDeepOrange,
         buttonTextStyle: CustomTextStyles.titleSmallRobotoWhiteA700,
         onPressed: () => Navigator.pushNamed(context, AppRoutes.myProfileScreen));

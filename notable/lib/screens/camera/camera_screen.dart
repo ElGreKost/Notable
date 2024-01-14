@@ -1,17 +1,19 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:notable/core/utils/size_utils.dart';
 
-import '../../routes/app_routes.dart';
+import '../textpreview/textpreview_page.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  _cameraScreenState createState() => _cameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _cameraScreenState extends State<CameraScreen> {
   CameraController? cameraController;
   late List<CameraDescription> cameras;
   late CameraDescription firstCamera;
@@ -21,6 +23,15 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
     initializeCamera();
+    fetchGalleryImages();
+  }
+
+  // Fetch images from the gallery
+  Future<void> fetchGalleryImages() async {
+    final List<XFile> pickedFiles = await ImagePicker().pickMultiImage();
+    setState(() {
+      galleryImages = pickedFiles;
+    });
   }
 
   Future<void> initializeCamera() async {
@@ -54,25 +65,22 @@ class _CameraScreenState extends State<CameraScreen> {
         children: [
           CameraPreview(cameraController!),
           galleryImages != null ? buildGalleryView() : const SizedBox(height: 100),
-          ElevatedButton(
-            onPressed: () => pickImageFromGallery(),
-            child: Text('Pick Image from Gallery'),
-          ),
         ],
-      ),
+      ), // Display the camera preview
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Implement your camera shot function
           onTapCamera(context);
         },
-        child: Icon(Icons.camera),
+        child: const Icon(Icons.camera),
       ),
     );
   }
 
   // Build the gallery view
   Widget buildGalleryView() {
-    return Container(
-      height: 100, // Adjust as needed
+    return SizedBox(
+      height: 100.h, // Adjust as needed
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: galleryImages?.length ?? 0,
@@ -87,32 +95,24 @@ class _CameraScreenState extends State<CameraScreen> {
   onTapCamera(BuildContext context) async {
     try {
       final image = await cameraController!.takePicture();
-      await processImageForOcr(image.path);
+      String ocrText = await processImageForOCR(image.path);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => TextPreviewPage(ocrText: ocrText)));
     } catch (e) {
       print(e); // Handle error
     }
-    Navigator.pushNamed(context, AppRoutes.textpreviewPage);
   }
 
-  Future<void> pickImageFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      await processImageForOcr(image.path);
-    }
-  }
-
-  Future<void> processImageForOcr(String imagePath) async {
+  Future<String> processImageForOCR(String imagePath) async {
     final inputImage = InputImage.fromFilePath(imagePath);
     final textRecognizer = TextRecognizer();
     final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-
+    String ocrText = '';
     for (TextBlock block in recognizedText.blocks) {
-      final String text = block.text;
       for (TextLine line in block.lines) {
-        // Each line in a block of text
-        print(line.text);
+        ocrText += line.text;
       }
     }
+    textRecognizer.close();
+    return ocrText;
   }
 }

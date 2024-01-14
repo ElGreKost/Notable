@@ -9,6 +9,7 @@ class TextPreviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    print(ocrText);
 
     return SafeArea(
         child: Scaffold(
