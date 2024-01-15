@@ -24,7 +24,7 @@ PreferredSizeWidget headerNavigator(BuildContext context, String title) {
           Navigator.pop(context);
         }),
     title: Text(title, style: whiteText),
-    actions: [icons.logo()],
+    actions: [icons.logoWidget(context: context)],
     backgroundColor: theme.colorScheme.primary,
   );
 }

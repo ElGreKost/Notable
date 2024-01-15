@@ -6,14 +6,10 @@ String _appTheme = "primary";
 /// Helper class for managing themes and colors.
 class ThemeHelper {
   // A map of custom color themes supported by the app
-  final Map<String, PrimaryColors> _supportedCustomColor = {
-    'primary': PrimaryColors()
-  };
+  final Map<String, PrimaryColors> _supportedCustomColor = {'primary': PrimaryColors()};
 
 // A map of color schemes supported by the app
-  final Map<String, ColorScheme> _supportedColorScheme = {
-    'primary': ColorSchemes.primaryColorScheme
-  };
+  final Map<String, ColorScheme> _supportedColorScheme = {'primary': ColorSchemes.primaryColorScheme};
 
   /// Returns the primary colors for the current theme.
   PrimaryColors _getThemeColors() {
@@ -36,8 +32,7 @@ class ThemeHelper {
     }
     //return theme from map
 
-    var colorScheme =
-        _supportedColorScheme[_appTheme] ?? ColorSchemes.primaryColorScheme;
+    var colorScheme = _supportedColorScheme[_appTheme] ?? ColorSchemes.primaryColorScheme;
     return ThemeData(
       visualDensity: VisualDensity.standard,
       colorScheme: colorScheme,
@@ -174,7 +169,9 @@ class PrimaryColors {
 
   // Gray
   Color get gray400 => const Color(0XFFB9B9B9);
+
   Color get gray800 => const Color(0XFF424242);
+
   Color get gray80001 => const Color(0XFF32403B);
 
   // Green
@@ -193,38 +190,18 @@ class PrimaryColors {
   Color get whiteA700 => const Color(0XFFFFFFFF);
 }
 
-class IconsUsed {
+class GlobalWidgets {
   Icon get backIcon => Icon(Icons.arrow_back_ios_rounded, color: appTheme.whiteA700);
 
-  LogoWidget logo({double? width, double? height}) => LogoWidget(width: width, height: height);
+  Widget logoWidget({required context, width, height}) => GestureDetector(
+      onTap: () => Navigator.pushNamed(context, AppRoutes.homepageScreen),
+      child: Image.asset(ImageConstant.imgLogo, width: width ?? 69.h, height: height ?? 116.v));
 }
-
-
-class LogoWidget extends StatelessWidget {
-  final double? width;
-  final double? height;
-
-  const LogoWidget({Key? key, this.width, this.height}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Directly navigate to the homepage when tapped
-        Navigator.pushNamed(context, AppRoutes.homepageScreen);
-      },
-      child: CustomImageView(
-        imagePath: ImageConstant.imgLogo,
-        height: height ?? 116.v, // Use the height passed in, or default to 116.v if null
-        width: width ?? 69.h, // Use the width passed in, or default to 69.h if null
-      ),
-    );
-  }
-}
-
 
 
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();
+
 ThemeData get theme => ThemeHelper().themeData();
-IconsUsed get icons => IconsUsed();
+
+GlobalWidgets get icons => GlobalWidgets();

@@ -83,7 +83,7 @@ class _CustomPhoneNumberState extends State<CustomPhoneNumber> {
               child: CustomTextFormField(
                 width: 305.h,
                 controller: widget.controller,
-                hintText: "6934012616",
+                hintText: "6912345678",
                 textInputType: TextInputType.phone,
               ),
             ),

@@ -5,8 +5,13 @@ import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:notable/core/utils/size_utils.dart';
+import 'package:notable/theme/custom_text_style.dart';
+import 'package:provider/provider.dart';
 
+import '../../app_state.dart';
+import '../../routes/app_routes.dart';
 import '../../theme/theme_helper.dart';
+import '../../theme/custom_button_style.dart';
 import '../textpreview/textpreview_page.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -53,7 +58,6 @@ class _cameraScreenState extends State<CameraScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     // Check if camera is initialized
@@ -63,7 +67,9 @@ class _cameraScreenState extends State<CameraScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Focus your Note'),
+        backgroundColor: theme.colorScheme.primary,
+        leading: IconButton(icon: icons.backIcon, onPressed: () => Navigator.pop(context)),
+        title: Text('Focus your Note', style: CustomTextStyles.titleMediumWhiteA700),
         centerTitle: true,
       ),
       body: Column(
@@ -78,20 +84,18 @@ class _cameraScreenState extends State<CameraScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Placeholder for alignment
             SizedBox(width: 48.h),
             FloatingActionButton(
-              backgroundColor: theme.colorScheme.onPrimaryContainer,
-              onPressed: () => onTapCamera(context), // Bigger camera icon
-              elevation: 4.0,
-              child: Icon(Icons.camera, size: 36.h),
-            ),
+                backgroundColor: theme.colorScheme.primary,
+                onPressed: () => onTapCamera(context),
+                elevation: 4.0,
+                child: Icon(Icons.camera, size: 36.h, color: appTheme.whiteA700)),
             FloatingActionButton(
-              backgroundColor: theme.colorScheme.onPrimaryContainer,
-              onPressed: () => fetchGalleryImages(), // Standard size
-              mini: true,
-              child: const Icon(Icons.photo_library), // Makes the button a bit smaller
-            ),
+                backgroundColor: theme.colorScheme.primary,
+                onPressed: () => fetchGalleryImages(),
+                mini: true,
+                child: Icon(Icons.photo_library, color: appTheme.whiteA700) // Makes the button a bit smaller
+                ),
           ],
         ),
       ),
@@ -117,7 +121,8 @@ class _cameraScreenState extends State<CameraScreen> {
     try {
       final image = await cameraController!.takePicture();
       String ocrText = await processImageForOCR(image.path);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => TextPreviewPage(ocrText: ocrText)));
+      Provider.of<AppState>(context, listen: false).setText(ocrText);
+      Navigator.pushNamed(context, AppRoutes.textpreviewPage);
     } catch (e) {
       print(e); // Handle error
     }

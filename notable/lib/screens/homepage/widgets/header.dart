@@ -11,15 +11,14 @@ import 'homepage_logo.dart';
 Row header(BuildContext context, String name, String imagePath) {
   var userInfo = ListTile(
       title: Text(name, maxLines: 2, overflow: TextOverflow.ellipsis, style: CustomTextStyles.titleMediumWhiteA700),
-      trailing:
-      CustomImageView(imagePath: imagePath, height: 51.v, width: 54.h, radius: BorderRadius.circular(27.h)));
+      trailing: CircleAvatar(backgroundImage: AssetImage(imagePath), radius: 25.h,));
 
   return Row(children: [
     Container(width: 120.h, decoration: AppDecoration.fillPrimary, child: homePageLogo(context)),
     Expanded(
       child: Column(children: [
         Container(
-            padding: EdgeInsets.fromLTRB(8.h, 8.v, 32.h, 8.v),
+            padding: EdgeInsets.fromLTRB(8.h, 8.v, 32.h, 8.v), // todo understand this padding ... something is off.
             decoration: AppDecoration.fillPrimary,
             child: userInfo),
         SizedBox(height: 5.v),

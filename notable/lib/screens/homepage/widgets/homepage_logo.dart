@@ -18,7 +18,7 @@ Widget homePageLogo(context) {
         ),
       ),
       // SizedBox(width: 2.h), // Controlled spacing
-      const LogoWidget(),
+      icons.logoWidget(context: context),
     ],
   );
 }

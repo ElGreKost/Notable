@@ -39,7 +39,7 @@ class AppRoutes {
     homepageScreen: (context) => HomepageScreen(),
     cameraScreen: (context) => CameraScreen(),
     textpreviewPage: (context) => const TextPreviewPage(), // changed from page-container to page
-    opennoteScreen: (context) => const OpennoteScreen(),
+    opennoteScreen: (context) => OpennoteScreen(),
     createAccountScreen: (context) => CreateAccountScreen(),
     myProfileScreen: (context) => MyProfileScreen(),
     appNavigationScreen: (context) => const AppNavigationScreen(),

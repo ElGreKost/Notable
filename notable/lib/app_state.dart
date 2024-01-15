@@ -12,4 +12,13 @@ class AppState extends ChangeNotifier {
   String? get userUid => _user?.uid;
   String? get userEmail => _user?.email;
   String? get userDisplayName => _user!.email!.split('@').first;
+
+  String? _text;
+  String? get text => _text;
+
+  void setText(String? newText) {
+    _text = newText;
+    notifyListeners();
+  }
+
 }
