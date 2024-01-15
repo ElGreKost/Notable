@@ -9,16 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../app_state.dart';
 import 'package:provider/provider.dart';
 
-class LoginsignupScreen1 extends StatefulWidget {
-  LoginsignupScreen1({Key? key}) : super(key: key);
-
-  @override
-  _LoginsignupScreen1State createState() => _LoginsignupScreen1State();
-}
-
-class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class LoginsignupScreen1 extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -135,12 +128,10 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
     );
   }
 
-  onTapLogin(BuildContext context) async {
+  void onTapLogin(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        setState(() {
-          loading = true;
-        });
+        loading = true;
 
         User? currUser = await AuthService().signIn(
           emailController.text,
@@ -158,23 +149,19 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
         print('Login Error: $e');
         // Handle login errors (display error message or take appropriate action)
       } finally {
-        setState(() {
-          loading = false;
-        });
+        loading = false;
       }
     }
   }
 
-  onTapCreateAnAccount(BuildContext context) {
+  void onTapCreateAnAccount(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.signupScreen);
   }
 
-  onTapForgotPassword(BuildContext context, String email) async {
+  void onTapForgotPassword(BuildContext context, String email) async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        setState(() {
-          loading = true;
-        });
+        loading = true;
 
         await AuthService().sendPasswordResetEmail(email);
         // TODO: show a success message e.g. "Password reset email sent"
@@ -183,9 +170,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
         // Handle any error that may occur during the password reset process
         print('Password Reset Error: $e');
       } finally {
-        setState(() {
-          loading = false;
-        });
+        loading = false;
       }
     }
   }
