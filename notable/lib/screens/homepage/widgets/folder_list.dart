@@ -25,10 +25,10 @@ class FoldersListView extends StatelessWidget {
 Widget folderListTile(folderName) => Container(
       decoration: BoxDecoration(color: theme.colorScheme.onPrimaryContainer, borderRadius: BorderRadius.circular(15)),
       child: ListTile(
-        leading: Icon(Icons.delete_outline, color: appTheme.black900),
+        leading: IconButton(icon: Icon(Icons.delete_outline, color: appTheme.black900), onPressed: () {}),
         title: Center(
             child: Text(folderName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),
-        trailing: Icon(Icons.file_download_outlined, color: appTheme.black900),
+        trailing: IconButton(icon: Icon(Icons.file_download_outlined, color: appTheme.black900), onPressed: () {}),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
     );

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_floating_text_field.dart';
-import '../../widgets/custom_phone_number.dart';
 
 // ignore_for_file: must_be_immutable
 class MyProfileScreen extends StatelessWidget {
@@ -37,21 +36,33 @@ class MyProfileScreen extends StatelessWidget {
                     width: 428.h,
                     child: SingleChildScrollView(
                         child: Column(children: [
-                          _buildImageEditShare(context, ImageConstant.imgUserImage),
-                          SizedBox(height: 23.v),
-                          _buildName(context),
-                          SizedBox(height: 36.v),
-                          _buildSurname(context),
-                          SizedBox(height: 35.v),
-                          Padding(padding: EdgeInsets.only(left: 15.h, right: 12.h), child: _buildPhoneNumber(context)),
-                          Divider(indent: 30.h, endIndent: 26.h),
-                          SizedBox(height: 36.v),
-                          _buildEmail(context, "mail@gmailcom"),
-                          SizedBox(height: 19.v),
-                          buildPointsWidget(points: 47),
-                          SizedBox(height: 49.v)
-                        ]))))));
+                      _buildImageEditShare(context, ImageConstant.imgUserImage),
+                      SizedBox(height: 23.v),
+                      _buildName(context),
+                      SizedBox(height: 36.v),
+                      _buildSurname(context),
+                      Divider(indent: 30.h, endIndent: 26.h, color: appTheme.black900, thickness: 1),
+                      _buildEmail(context, "mail@gmailcom"),
+                      SizedBox(height: 19.v),
+                      buildPointsWidget(points: 47),
+                      SizedBox(height: 49.v)
+                    ]))))));
   }
+
+  Widget _buildImageEditShare(BuildContext context, String imagePath) => Container(
+        decoration: AppDecoration.gradientPrimaryToSecondaryContainer,
+        child: Stack(children: [
+          Center(
+              child: Padding(
+                  padding: EdgeInsets.all(16.h),
+                  child: CircleAvatar(backgroundImage: AssetImage(imagePath), radius: 113.adaptSize))),
+          Positioned(
+              bottom: 0,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [_buildShareProfile(context), _buildEditProfile(context)]))
+        ]),
+      );
 
   /// Section Widget
   Widget _buildShareProfile(BuildContext context) {
@@ -77,33 +88,14 @@ class MyProfileScreen extends StatelessWidget {
         onPressed: () => Navigator.pushNamed(context, AppRoutes.createAccountScreen),
         alignment: Alignment.bottomLeft);
   }
-
-  Widget _buildImageEditShare(BuildContext context, String imagePath) =>
-      Container(
-        decoration: AppDecoration.gradientPrimaryToSecondaryContainer,
-        child: Stack(children: [
-          Center(
-              child: Padding(
-                  padding: EdgeInsets.all(16.h),
-                  child: CircleAvatar(backgroundImage: AssetImage(imagePath), radius: 113.adaptSize))),
-          Positioned(bottom: 0, child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [_buildShareProfile(context), _buildEditProfile(context)]))
-        ]),
-      );
 }
-
-// Align(
-// alignment: Alignment.bottomLeft,
-// child: Padding(
-// padding: EdgeInsets.only(left: 21.h),
-// child: Text("Your Information", style: theme.textTheme.titleLarge)))
 
 /// Section Widget
 Widget _buildName(BuildContext context) {
   return Padding(
       padding: EdgeInsets.only(left: 15.h, right: 12.h),
       child: CustomFloatingTextField(
-        // controller: nameController,
+          // controller: nameController,
           labelText: " Name",
           labelStyle: theme.textTheme.titleMedium!,
           hintText: " Name"));
@@ -114,25 +106,22 @@ Widget _buildSurname(BuildContext context) {
   return Padding(
       padding: EdgeInsets.only(left: 15.h, right: 12.h),
       child: CustomFloatingTextField(
-        // controller: surnameController,
+          // controller: surnameController,
           labelText: "Surname",
           labelStyle: theme.textTheme.titleMedium!,
           hintText: "Surname"));
 }
 
-/// Section Widget
-Widget _buildPhoneNumber(BuildContext context) {
-  return Padding(
-      padding: EdgeInsets.only(left: 15.h, right: 12.h),
-      child: const Text('needs debug'));
-}
-// CustomPhoneNumber(
+// Widget _buildPhoneNumber(BuildContext context) {
+  // CustomPhoneNumber(
 // country: selectedCountry,
 // controller: phoneNumberController,
 // onTap: (Country value) {
 // selectedCountry = value;
 // })
-/// Section Widget
+// }
+
+
 Widget _buildEmail(BuildContext context, String email) {
   return SizedBox(
       height: 69.v,
@@ -150,8 +139,8 @@ Widget _buildEmail(BuildContext context, String email) {
                     children: [SizedBox(height: 8.v), Text(email, style: theme.textTheme.titleMedium)]))),
         Align(
             alignment: Alignment.topLeft,
-            child: Padding(
-                padding: EdgeInsets.only(left: 11.h), child: Text("E-mail", style: theme.textTheme.titleSmall)))
+            child:
+                Padding(padding: EdgeInsets.only(left: 11.h), child: Text("E-mail", style: theme.textTheme.titleSmall)))
       ]));
 }
 
