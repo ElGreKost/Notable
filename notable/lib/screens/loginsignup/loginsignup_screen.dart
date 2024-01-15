@@ -82,7 +82,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                       },
                       alignment: Alignment.center,
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Center(
                       child: TextButton(
                         onPressed: () {
@@ -98,7 +98,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Center(
                       child: TextButton(
                         onPressed: () => onTapForgotPasswordAlert(
@@ -106,7 +106,8 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                           title: 'Forgot Password',
                           icon: const Icon(Icons.mail_outline),
                           labelText: 'Enter your email',
-                          buttonText: 'Send email',
+                          buttonText: 'Reset Password',
+                          onTapForgotPassword: onTapForgotPassword,
                         ),
                         child: Text(
                           "Forgot your password?",
@@ -124,7 +125,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
             if (loading)
               Container(
                 color: Colors.black.withOpacity(0.5),
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
@@ -166,5 +167,26 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
 
   onTapCreateAnAccount(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.signupScreen);
+  }
+
+  onTapForgotPassword(BuildContext context, String email) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        setState(() {
+          loading = true;
+        });
+
+        await AuthService().sendPasswordResetEmail(email);
+        // TODO: show a success message e.g. "Password reset email sent"
+        Navigator.pop(context);
+      } catch (e) {
+        // Handle any error that may occur during the password reset process
+        print('Password Reset Error: $e');
+      } finally {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
   }
 }

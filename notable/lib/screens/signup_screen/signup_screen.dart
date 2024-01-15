@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notable/screens/loginsignup/widgets/forgot_password_alert.dart';
 import '../../core/app_export.dart';
 import '../../widgets/alerts.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -67,20 +66,6 @@ class SignupScreen extends StatelessWidget {
                             onTapCreateAnAccount(context);
                           },
                           alignment: Alignment.center),
-
-                      Center(
-                          child: TextButton(
-                              onPressed: () =>onTapForgotPasswordAlert(
-                                context: context,
-                                title: 'Forgot Password',
-                                icon: const Icon(Icons.mail_outline),
-                                labelText: 'Enter your email',
-                                buttonText: 'Send',),
-                              child: Text("Forgot your password?",
-                                  style: TextStyle(
-                                    color: Colors.blue, // Adjust the color as needed
-                                    fontSize: 16.fSize, // Adjust the font size as needed
-                                  )))),
                     ])))));
   }
 
