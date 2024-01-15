@@ -29,7 +29,6 @@ void onTapForgotPasswordAlert({
     buttons: [
       DialogButton(
         onPressed: () async {
-          print(controller.text);
           onTapForgotPassword(context, controller.text); // Call onTapForgotPassword when the button is pressed
         },
         child: Text(
