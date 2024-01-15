@@ -1,6 +1,8 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../app_state.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_floating_text_field.dart';
@@ -37,12 +39,19 @@ class MyProfileScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                         child: Column(children: [
                       _buildImageEditShare(context, ImageConstant.imgUserImage),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                              padding: EdgeInsets.only(left: 8.h),
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: 14.v),
+                                  child: Text("Your Information", style: theme.textTheme.titleLarge)))),
                       SizedBox(height: 23.v),
                       _buildName(context),
-                      SizedBox(height: 36.v),
-                      _buildSurname(context),
-                      Divider(indent: 30.h, endIndent: 26.h, color: appTheme.black900, thickness: 1),
-                      _buildEmail(context, "mail@gmailcom"),
+                      Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.v),
+                          child: Divider(indent: 30.h, endIndent: 26.h, color: appTheme.black900, thickness: 1)),
+                      _buildEmail(context),
                       SizedBox(height: 19.v),
                       buildPointsWidget(points: 47),
                       SizedBox(height: 49.v)
@@ -60,7 +69,7 @@ class MyProfileScreen extends StatelessWidget {
               bottom: 0,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [_buildShareProfile(context), _buildEditProfile(context)]))
+                  children: [_buildEditProfile(context), _buildShareProfile(context)]))
         ]),
       );
 
@@ -92,90 +101,33 @@ class MyProfileScreen extends StatelessWidget {
 
 /// Section Widget
 Widget _buildName(BuildContext context) {
+  // String? displayName = Provider.of<AppState>(context).userDisplayName;
   return Padding(
       padding: EdgeInsets.only(left: 15.h, right: 12.h),
       child: CustomFloatingTextField(
-          // controller: nameController,
-          labelText: " Name",
+          controller: TextEditingController(text: ''),
+          labelText: " username",
           labelStyle: theme.textTheme.titleMedium!,
-          hintText: " Name"));
+          hintText: " username"));
 }
 
-/// Section Widget
-Widget _buildSurname(BuildContext context) {
+Widget _buildEmail(BuildContext context) {
+  String? email = Provider.of<AppState>(context).userEmail;
   return Padding(
       padding: EdgeInsets.only(left: 15.h, right: 12.h),
       child: CustomFloatingTextField(
-          // controller: surnameController,
-          labelText: "Surname",
+          controller: TextEditingController(text: email),
+          labelText: "E-mail",
           labelStyle: theme.textTheme.titleMedium!,
-          hintText: "Surname"));
-}
-
-// Widget _buildPhoneNumber(BuildContext context) {
-  // CustomPhoneNumber(
-// country: selectedCountry,
-// controller: phoneNumberController,
-// onTap: (Country value) {
-// selectedCountry = value;
-// })
-// }
-
-
-Widget _buildEmail(BuildContext context, String email) {
-  return SizedBox(
-      height: 69.v,
-      width: 401.h,
-      child: Stack(alignment: Alignment.topLeft, children: [
-        Align(
-            alignment: Alignment.center,
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 48.h, vertical: 8.v),
-                decoration: AppDecoration.outlineLime.copyWith(borderRadius: BorderRadiusStyle.roundedBorder20),
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [SizedBox(height: 8.v), Text(email, style: theme.textTheme.titleMedium)]))),
-        Align(
-            alignment: Alignment.topLeft,
-            child:
-                Padding(padding: EdgeInsets.only(left: 11.h), child: Text("E-mail", style: theme.textTheme.titleSmall)))
-      ]));
+          hintText: "mail@gmail.com"));
 }
 
 Widget buildPointsWidget({num points = 0}) {
-  return Align(
-    alignment: Alignment.centerLeft,
-    child: Container(
-      height: 69.v,
-      width: 113.h,
-      margin: EdgeInsets.only(left: 23.h),
-      child: Stack(alignment: Alignment.topLeft, children: [
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 8.v),
-            decoration: AppDecoration.outlineLime.copyWith(borderRadius: BorderRadiusStyle.roundedBorder20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(height: 9.v),
-                Text(points.toString(), style: theme.textTheme.titleMedium), // Points displayed here
-              ],
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: EdgeInsets.only(left: 9.h),
-            child: Text("Points", style: theme.textTheme.titleSmall),
-          ),
-        ),
-      ]),
-    ),
-  );
+  return Padding(
+      padding: EdgeInsets.only(left: 15.h, right: 12.h),
+      child: CustomFloatingTextField(
+        controller: TextEditingController(text: points.toString()),
+        labelText: "Points",
+        labelStyle: theme.textTheme.titleMedium!,
+      ));
 }

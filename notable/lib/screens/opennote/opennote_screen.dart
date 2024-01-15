@@ -17,10 +17,10 @@ class OpennoteScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: theme.colorScheme.primary,
-          // Make AppBar transparent
           elevation: 0,
           leading: icons.logoWidget(context: context),
-          title: Center(child: Text('Note\'s Name', style: CustomTextStyles.titleMediumWhiteA700)),
+          title: Text('Note\'s Name', style: CustomTextStyles.titleMediumWhiteA700),
+          centerTitle: true,
           actions: _buildActionButtons(context),
         ),
         body: Stack(
