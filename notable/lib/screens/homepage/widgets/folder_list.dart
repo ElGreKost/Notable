@@ -36,7 +36,7 @@ Widget folderListTile(context, folderName) {
       onTap: () => Navigator.pushNamed(context, AppRoutes.opennoteScreen),
       leading: IconButton(
           icon: Icon(Icons.delete_outline, color: appTheme.black900),
-          onPressed: () => Provider.of<AppState>(context, listen: false).deleteFolder),
+          onPressed: () => Provider.of<AppState>(context, listen: false).deleteFolder(folderName)),
       title: Center(
           child: Text(folderName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),
       trailing: IconButton(icon: Icon(Icons.file_download_outlined, color: appTheme.black900), onPressed: () {}),

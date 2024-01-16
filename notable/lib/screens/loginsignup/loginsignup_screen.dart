@@ -165,13 +165,10 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
           for (var doc in foldersSnapshot.docs) {
             folders.add(doc.data() as Map<String, dynamic>);
           }
-          // Print the contents of the folders list
-          print("\n\n\n\n\n\n\n\n\nFolders: ");
-          for (var folder in folders) {
-            print(folder.toString());
-          }
-          Navigator.pushNamed(context, AppRoutes.homepageScreen);
+
+          Provider.of<AppState>(context, listen: false).setFolders(folders);
           Provider.of<AppState>(context, listen: false).setUser(currUser);
+          Navigator.pushNamed(context, AppRoutes.homepageScreen);
         } else {
           print('user was null');
         }

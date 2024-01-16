@@ -10,7 +10,7 @@ class HomepageScreen extends StatelessWidget {
     mediaQueryData = MediaQuery.of(context);
 
     double horizontalMargin = 40.h;
-    List<String> folderNames = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5', 'Course 6', 'Course 7'];
+    List<String> folderNames = Provider.of<AppState>(context).folderNames;
 
     return SafeArea(
       child: Scaffold(
@@ -31,9 +31,7 @@ class HomepageScreen extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-                child: FoldersListView(
-                  folderNames: folderNames,
-                ),
+                child: FoldersListView(folderNames: folderNames),
               ),
             ),
             SizedBox(height: 24.v),
@@ -53,8 +51,8 @@ class HomepageScreen extends StatelessWidget {
 
   /// Section Widget
   Widget _buildFooter(BuildContext context) => Container(
-    height: 40.v,
-    decoration: AppDecoration.fillPrimary,
-    child: Center(child: Text("Contact us:    theTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700)),
-  );
+        height: 40.v,
+        decoration: AppDecoration.fillPrimary,
+        child: Center(child: Text("Contact us:    theTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700)),
+      );
 }

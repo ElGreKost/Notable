@@ -30,15 +30,13 @@ void onPressedCreateAlert(
   ).show();
 }
 
-void onTapInsertFolderAlert({
-  required BuildContext context,
-  required String title,
-  required Icon icon,
-  required String labelText,
-  required String buttonText,
-  required String userUid
-}) {
-  // Create a TextEditingController
+void onTapInsertFolderAlert(
+    {required BuildContext context,
+    required String title,
+    required Icon icon,
+    required String labelText,
+    required String buttonText,
+    required String userUid}) {
   TextEditingController controller = TextEditingController();
 
   Alert(
@@ -46,37 +44,18 @@ void onTapInsertFolderAlert({
     title: title,
     content: Column(
       children: <Widget>[
-        TextFormField(
-          decoration: InputDecoration(
-            icon: icon,
-            labelText: labelText,
-          ),
-          controller: controller,
-        ),
+        TextFormField(decoration: InputDecoration(icon: icon, labelText: labelText), controller: controller),
       ],
     ),
     buttons: [
       DialogButton(
-        onPressed: () async {
-          // Retrieve the folder name from the text field
+        onPressed: () {
           String folderName = controller.text;
-
-          await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').add({
-            'folderName': folderName, // Use the text from the controller
-            'content': '',
-            'userUid': userUid,
-          });
-
-          // Optionally, close the dialog
+          Provider.of<AppState>(context, listen: false).addFolder(folderName);
           Navigator.of(context).pop();
         },
-        child: Text(
-          buttonText,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-        ),
+        child: Text(buttonText, style: const TextStyle(color: Colors.white, fontSize: 20)),
       )
     ],
   ).show();
 }
-
-
