@@ -57,7 +57,7 @@ class OpennoteScreen extends StatelessWidget {
   }
 
   List<IconButton> _buildActionButtons(BuildContext context) => [
-        IconButton(icon: Icon(Icons.save_alt, color: appTheme.whiteA700), onPressed: () {}),
+        IconButton(icon: Icon(Icons.published_with_changes, color: appTheme.whiteA700), onPressed: () {}),
         IconButton(icon: Icon(Icons.share, color: appTheme.whiteA700), onPressed: () {})
       ];
 }

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import '../../app_state.dart';
 import '../../core/app_export.dart';
 import '../../widgets/edge_navigators.dart';
 
 class TextPreviewPage extends StatelessWidget {
-  const TextPreviewPage({Key? key}) : super(key: key);
+  final String ocrText;
+
+  const TextPreviewPage({Key? key, required this.ocrText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final String ocrText = Provider.of<AppState>(context).text ?? 'You have beautiful notes!';
     final GlobalKey _tooltipKey = GlobalKey();
 
     void showCopiedTooltip() {

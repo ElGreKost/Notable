@@ -32,7 +32,7 @@ class CreateAccountScreen extends StatelessWidget {
                 centerTitle: true,
                 actions: [
                   IconButton(
-                      icon: Icon(Icons.check_circle_rounded, color: appTheme.whiteA700),
+                      icon: Icon(Icons.published_with_changes, color: appTheme.whiteA700),
                       onPressed: () => Navigator.pushNamed(context, AppRoutes.myProfileScreen))
                 ]),
             backgroundColor: appTheme.whiteA700,
@@ -59,7 +59,6 @@ class CreateAccountScreen extends StatelessWidget {
                                     SizedBox(height: 23.v),
                                     _buildName(context),
                                     SizedBox(height: 36.v),
-                                    _buildEmail(context)
                                   ]))))
                     ])))));
   }
@@ -87,20 +86,13 @@ class CreateAccountScreen extends StatelessWidget {
       ]),
     );
   }
-
+  // todo Giannis update when the button is pressed
   Widget _buildName(BuildContext context) {
+    String? displayName = Provider.of<AppState>(context).userDisplayName;
     return CustomFloatingTextField(
-        controller: nameController, labelText: " Name", labelStyle: theme.textTheme.titleMedium!, hintText: " Name");
-  }
-
-  Widget _buildEmail(BuildContext context) {
-    String? email = Provider.of<AppState>(context).userEmail;
-    return Padding(
-        padding: EdgeInsets.only(left: 15.h, right: 12.h),
-        child: CustomFloatingTextField(
-            controller: TextEditingController(text: email),
-            labelText: "E-mail",
-            labelStyle: theme.textTheme.titleMedium!,
-            hintText: "mail@gmail.com"));
+        controller: TextEditingController(text: displayName),
+        labelText: " Name",
+        labelStyle: theme.textTheme.titleMedium!,
+        hintText: displayName);
   }
 }

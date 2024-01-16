@@ -99,35 +99,21 @@ class MyProfileScreen extends StatelessWidget {
   }
 }
 
-/// Section Widget
 Widget _buildName(BuildContext context) {
-  // String? displayName = Provider.of<AppState>(context).userDisplayName;
+  String? displayName = Provider.of<AppState>(context).userDisplayName;
+  // todo make it more beautiful
   return Padding(
-      padding: EdgeInsets.only(left: 15.h, right: 12.h),
-      child: CustomFloatingTextField(
-          controller: TextEditingController(text: ''),
-          labelText: " username",
-          labelStyle: theme.textTheme.titleMedium!,
-          hintText: " username"));
+      padding: EdgeInsets.only(left: 15.h, right: 12.h), child: Text(displayName!, style: theme.textTheme.titleMedium));
 }
 
 Widget _buildEmail(BuildContext context) {
   String? email = Provider.of<AppState>(context).userEmail;
   return Padding(
-      padding: EdgeInsets.only(left: 15.h, right: 12.h),
-      child: CustomFloatingTextField(
-          controller: TextEditingController(text: email),
-          labelText: "E-mail",
-          labelStyle: theme.textTheme.titleMedium!,
-          hintText: "mail@gmail.com"));
+      padding: EdgeInsets.only(left: 15.h, right: 12.h), child: Text(email!, style: theme.textTheme.titleMedium));
 }
 
 Widget buildPointsWidget({num points = 0}) {
   return Padding(
       padding: EdgeInsets.only(left: 15.h, right: 12.h),
-      child: CustomFloatingTextField(
-        controller: TextEditingController(text: points.toString()),
-        labelText: "Points",
-        labelStyle: theme.textTheme.titleMedium!,
-      ));
+      child: Text(points.toString(), style: theme.textTheme.titleMedium));
 }

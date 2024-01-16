@@ -25,7 +25,7 @@ Widget coursesHeader(BuildContext context, double horizontalMargin) {
                   buttonText: 'Create',
                   userUid: currUid ?? 'was null')),
       title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
-      trailing: Icon(Icons.search_outlined, color: appTheme.black900),
+      trailing: IconButton(icon: Icon(Icons.create_new_folder, color: appTheme.black900), onPressed: () {  },),
     ),
   );
 }

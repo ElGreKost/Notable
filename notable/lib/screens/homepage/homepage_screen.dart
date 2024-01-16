@@ -11,12 +11,12 @@ class HomepageScreen extends StatelessWidget {
 
     double horizontalMargin = 40.h;
     List<String> folderNames = Provider.of<AppState>(context).folderNames;
-
+    String? displayName = Provider.of<AppState>(context).userDisplayName;
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
-            header(context, 'UserDisplayName', ImageConstant.imgUserImage),
+            header(context, displayName!, ImageConstant.imgUserImage),
             SizedBox(height: 24.v),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalMargin),

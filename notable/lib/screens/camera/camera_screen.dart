@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:notable/core/utils/size_utils.dart';
-import 'package:notable/theme/custom_text_style.dart';
-import 'package:provider/provider.dart';
 
+import '../../core/utils/size_utils.dart';
+import '../../theme/custom_text_style.dart';
 import '../../app_state.dart';
-import '../../routes/app_routes.dart';
 import '../../theme/theme_helper.dart';
-import '../../theme/custom_button_style.dart';
 import '../textpreview/textpreview_page.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -60,7 +57,6 @@ class _cameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Check if camera is initialized
     if (cameraController == null || !cameraController!.value.isInitialized) {
       return Container(); // or a loader
     }
@@ -121,8 +117,7 @@ class _cameraScreenState extends State<CameraScreen> {
     try {
       final image = await cameraController!.takePicture();
       String ocrText = await processImageForOCR(image.path);
-      Provider.of<AppState>(context, listen: false).setText(ocrText);
-      Navigator.pushNamed(context, AppRoutes.textpreviewPage);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => TextPreviewPage(ocrText: ocrText)));
     } catch (e) {
       print(e); // Handle error
     }
