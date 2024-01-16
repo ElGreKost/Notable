@@ -34,7 +34,11 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<String> get folderNames => _folders.map((folder) => folder['folderName'] as String).toList();
+  List<String> get folderNames {
+  var names = _folders.map((folder) => folder['folderName'] as String).toList();
+  names.sort((a, b) => a.compareTo(b));
+  return names;
+}
 
   void addFolder(String folderName) async {
     // todo Giannis make sure folderName is unique in the database
