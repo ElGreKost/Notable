@@ -76,4 +76,24 @@ class AppState extends ChangeNotifier {
       print('Error deleting folder: $e');
     }
   }
+  void updateDisplayName(String newDisplayName) async {
+    try {
+      // Ensure that the _user property is not null before proceeding
+      if (_user != null) {
+        print('Before update - Current display name: ${_user!.displayName}');
+
+        // Update the display name
+        await _user!.updateDisplayName(newDisplayName);
+
+        // Update the display name in the local state
+        _user = FirebaseAuth.instance.currentUser;
+        notifyListeners();
+
+        print('After update - Updated display name: ${_user!.displayName}');
+      }
+    } catch (error) {
+      print('Error updating display name: $error');
+    }
+  }
+
 }

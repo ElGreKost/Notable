@@ -16,7 +16,7 @@ class HomepageScreen extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            header(context, displayName!, ImageConstant.imgUserImage),
+            header(context, 'Username: ${displayName!}', ImageConstant.imgUserImage),
             SizedBox(height: 24.v),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
