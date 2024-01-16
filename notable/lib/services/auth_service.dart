@@ -14,6 +14,8 @@ class AuthService {
     }
   }
 
+
+
   Future<User?> signUp(String email, String password) async {
     try {
       // Check if the email is already in use
@@ -80,13 +82,6 @@ class AuthService {
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       print('Email received: $email');
-      // Check if the email is already in use
-      bool emailExists = await isEmailInUse(email);
-
-      if (!emailExists) {
-        throw ('The email address is not associated with an existing account.');
-      }
-
       // Continue with the password reset process
       await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
@@ -94,5 +89,6 @@ class AuthService {
       throw ('An error occurred during the password reset process.');
     }
   }
+
 }
 

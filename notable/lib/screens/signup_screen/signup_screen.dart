@@ -47,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       width: 288.h,
                       margin: EdgeInsets.only(left: 20.h, right: 31.h),
                       child: Text(
-                        "Create your very own account to enjoy all the services without any ads for free!",
+                        "Create an account to enjoy all the services without any ads for free!",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
@@ -78,7 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(height: 8.v),
                     CustomElevatedButton(
-                      text: "Create your Notable account",
+                      text: "Create your account",
                       margin: EdgeInsets.only(left: 29.h, right: 39.h),
                       onPressed: () {
                         onTapCreateAnAccount(context);
