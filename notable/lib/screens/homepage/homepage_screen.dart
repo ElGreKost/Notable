@@ -33,8 +33,6 @@ class HomepageScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
                 child: FoldersListView(
                   folderNames: folderNames,
-                  // Pass onDeleteFolder directly from Provider
-                  onDeleteFolder: Provider.of<AppState>(context, listen: false).deleteFolder,
                 ),
               ),
             ),

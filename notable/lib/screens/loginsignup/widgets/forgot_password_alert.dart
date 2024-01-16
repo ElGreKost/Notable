@@ -7,6 +7,7 @@ void onTapForgotPasswordAlert({
   required Icon icon,
   required String labelText,
   required String buttonText,
+  required Function onTapForgotPassword, // Pass the onTapForgotPassword function as a parameter
 }) {
   // Create a TextEditingController
   TextEditingController controller = TextEditingController();
@@ -27,8 +28,9 @@ void onTapForgotPasswordAlert({
     ),
     buttons: [
       DialogButton(
-        // todo for Gianni
-        onPressed: () async {},
+        onPressed: () async {
+          onTapForgotPassword(context, controller.text); // Call onTapForgotPassword when the button is pressed
+        },
         child: Text(
           buttonText,
           style: const TextStyle(color: Colors.white, fontSize: 20),

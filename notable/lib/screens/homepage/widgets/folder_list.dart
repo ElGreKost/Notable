@@ -1,14 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../app_state.dart';
 import '../../../core/app_export.dart';
 
 class FoldersListView extends StatelessWidget {
   final List<String> folderNames;
-  final Function(String) onDeleteFolder;
 
   const FoldersListView({
     Key? key,
-    required this.folderNames,
-    required this.onDeleteFolder,
+    required this.folderNames
   }) : super(key: key);
 
   @override
@@ -21,23 +22,25 @@ class FoldersListView extends StatelessWidget {
         itemCount: folderNames.length,
         itemBuilder: (context, index) {
           String folderName = folderNames[index];
-          return folderListTile(context, folderName, onDeleteFolder: onDeleteFolder);
+          return folderListTile(context, folderName);
         },
       ),
     );
   }
 }
 
-Widget folderListTile(context, folderName, {required Function(String) onDeleteFolder}) => Container(
-  decoration: BoxDecoration(color: theme.colorScheme.onPrimaryContainer, borderRadius: BorderRadius.circular(15)),
-  child: ListTile(
-    leading: IconButton(
-      icon: Icon(Icons.delete_outline, color: appTheme.black900),
-      onPressed: () => onDeleteFolder(folderName),
+Widget folderListTile(context, folderName) {
+  return Container(
+    decoration: BoxDecoration(color: theme.colorScheme.onPrimaryContainer, borderRadius: BorderRadius.circular(15)),
+    child: ListTile(
+      onTap: () => Navigator.pushNamed(context, AppRoutes.opennoteScreen),
+      leading: IconButton(
+          icon: Icon(Icons.delete_outline, color: appTheme.black900),
+          onPressed: () => Provider.of<AppState>(context, listen: false).deleteFolder),
+      title: Center(
+          child: Text(folderName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),
+      trailing: IconButton(icon: Icon(Icons.file_download_outlined, color: appTheme.black900), onPressed: () {}),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     ),
-    title: Center(
-        child: Text(folderName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),
-    trailing: IconButton(icon: Icon(Icons.file_download_outlined, color: appTheme.black900), onPressed: () {}),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-  ),
-);
+  );
+}

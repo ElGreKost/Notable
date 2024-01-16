@@ -61,8 +61,7 @@ void onTapInsertFolderAlert({
           // Retrieve the folder name from the text field
           String folderName = controller.text;
 
-          // Add a new document to the 'folders' collection in Firestore
-          await FirebaseFirestore.instance.collection('folders').add({
+          await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').add({
             'folderName': folderName, // Use the text from the controller
             'content': '',
             'userUid': userUid,
