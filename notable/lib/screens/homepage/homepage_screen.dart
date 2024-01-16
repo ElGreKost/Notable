@@ -121,7 +121,7 @@ class HomepageScreen extends StatelessWidget {
                                               'content': 'This is an example document',
                                               'userUid': currUid // Storing the user's UID for reference
                                             });
-                                            ----------------------------------------------------------------------------------------------------------
+                                            // ----------------------------------------------------------------------------------------------------------
                                             //delete a specific folder
                                             onPressed: () async {
                                               String folderNameToDelete = 'Folder Name'; // Replace with the name of the folder you want to delete
@@ -148,7 +148,7 @@ class HomepageScreen extends StatelessWidget {
                                                 print('Error deleting folder: $e');
                                               }
                                             };
-                                            ----------------------------------------------------------------------------------------------------
+                                            // ----------------------------------------------------------------------------------------------------
                                             //rename the folder
                                             onPressed: () async {
                                             String oldFolderName = 'Old Folder Name'; // Replace with the current name of the folder
@@ -176,7 +176,7 @@ class HomepageScreen extends StatelessWidget {
                                             print('Error renaming folder: $e');
                                             }
                                             };
-                                            -----------------------------------------------------------------------------------------------------------
+                                            // -----------------------------------------------------------------------------------------------------------
 
 
 
