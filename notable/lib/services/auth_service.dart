@@ -89,5 +89,6 @@ class AuthService {
       throw ('An error occurred during the password reset process.');
     }
   }
+
 }
 
