@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../app_state.dart';
 import 'package:provider/provider.dart';
 
-
 class LoginsignupScreen1 extends StatefulWidget {
   LoginsignupScreen1({Key? key}) : super(key: key);
 
@@ -40,8 +39,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                   children: [
                     Align(
                       alignment: Alignment.center,
-                      child: Text("Welcome to Notable",
-                          style: theme.textTheme.displaySmall),
+                      child: Text("Welcome to Notable", style: theme.textTheme.displaySmall),
                     ),
                     Container(
                       width: 288.h,
@@ -51,8 +49,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                            height: 1.30),
+                        style: theme.textTheme.bodyMedium!.copyWith(height: 1.30),
                       ),
                     ),
                     SizedBox(height: 41.v),
@@ -94,9 +91,7 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                         child: Text(
                           "Create an account",
                           style: TextStyle(
-                            color: Theme
-                                .of(context)
-                                .primaryColor,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.fSize,
                           ),
@@ -106,15 +101,14 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
                     const SizedBox(height: 5),
                     Center(
                       child: TextButton(
-                        onPressed: () =>
-                            onTapForgotPasswordAlert(
-                              context: context,
-                              title: 'Forgot Password',
-                              icon: const Icon(Icons.mail_outline),
-                              labelText: 'Enter your email',
-                              buttonText: 'Send email',
-                              onTapForgotPassword: onTapForgotPassword,
-                            ),
+                        onPressed: () => onTapForgotPasswordAlert(
+                          context: context,
+                          title: 'Forgot Password',
+                          icon: const Icon(Icons.mail_outline),
+                          labelText: 'Enter your email',
+                          buttonText: 'Send email',
+                          onTapForgotPassword: onTapForgotPassword,
+                        ),
                         child: Text(
                           "Forgot your password?",
                           style: TextStyle(
@@ -155,15 +149,12 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
 
         if (currUser != null) {
           String userId = currUser.uid;
-          var foldersSnapshot = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .collection('folders')
-              .get();
+          var foldersSnapshot =
+              await FirebaseFirestore.instance.collection('users').doc(userId).collection('folders').get();
 
           List<Map<String, dynamic>> folders = [];
           for (var doc in foldersSnapshot.docs) {
-            folders.add(doc.data() as Map<String, dynamic>);
+            folders.add(doc.data());
           }
 
           Provider.of<AppState>(context, listen: false).setFolders(folders);
@@ -172,10 +163,12 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
         } else {
           print('user was null');
         }
-
       } catch (e) {
         print('Login Error: $e');
-        // Handle login errors (display error message or take appropriate action)
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: theme.colorScheme.primary,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: const Text('Login failed. Please check your email and password.')));
       } finally {
         setState(() {
           loading = false;
@@ -188,7 +181,6 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
   onTapCreateAnAccount(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.signupScreen);
   }
-
 
   void onTapForgotPassword(BuildContext context, String email) async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -213,6 +205,10 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
       } catch (e) {
         // Handle any error that may occur during the password reset process
         print('Password Reset Error: $e');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: theme.colorScheme.primary,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: const Text('Error on forgot password. Contact us for more info')));
       } finally {
         // Set loading to false after the request has completed
         setState(() {

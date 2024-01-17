@@ -28,20 +28,18 @@ class _SignupScreenState extends State<SignupScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Stack(
+        body: Column(
           children: [
             Form(
               key: _formKey,
-              child: Container(
-                width: double.maxFinite,
+              child: Padding(
                 padding: EdgeInsets.only(left: 25.h, top: 158.v, right: 25.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Align(
                       alignment: Alignment.center,
-                      child: Text("Register to Notable",
-                          style: theme.textTheme.displaySmall),
+                      child: Text("Register to Notable", style: theme.textTheme.displaySmall),
                     ),
                     Container(
                       width: 288.h,
@@ -51,8 +49,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                            height: 1.30),
+                        style: theme.textTheme.bodyMedium!.copyWith(height: 1.30),
                       ),
                     ),
                     SizedBox(height: 41.v),
@@ -85,6 +82,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                       alignment: Alignment.center,
                     ),
+                    Center(
+                      child: TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Log In', style: TextStyle(color: theme.colorScheme.primary, fontSize: 16.h))),
+                    )
                   ],
                 ),
               ),
@@ -113,21 +115,21 @@ class _SignupScreenState extends State<SignupScreen> {
         });
 
         // Check if the email is already in use before signing up
-        bool emailExists = await AuthService().isEmailInUse(
-            emailController.text);
+        bool emailExists = await AuthService().isEmailInUse(emailController.text); // if not it throws error and skips if
 
         if (emailExists) {
           // Display an error message if the email is already in use
-          print('Email address is already in use');
+          print('Email address is already in use'); // todo Giannis when I use the same mail to signup I don't get this error printed.
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: theme.colorScheme.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              content: const Text('That email address is already in use. Please try using a different one or sign in with your existing account.')));
         } else {
-
           User? currUser = await AuthService().signUp(
             emailController.text,
             passwordController.text,
           );
-          await FirebaseFirestore.instance.collection('users').add(<String, dynamic>{
-            'email': emailController.text
-          });
+          await FirebaseFirestore.instance.collection('users').add(<String, dynamic>{'email': emailController.text});
 
           Provider.of<AppState>(context, listen: false).setUser(currUser);
           Navigator.pushNamed(context, AppRoutes.homepageScreen);
@@ -137,8 +139,7 @@ class _SignupScreenState extends State<SignupScreen> {
         print('Signup Error: $e');
       } finally {
         setState(() {
-          loading =
-          false; // Set loading to false after the request has completed
+          loading = false; // Set loading to false after the request has completed
         });
       }
     }

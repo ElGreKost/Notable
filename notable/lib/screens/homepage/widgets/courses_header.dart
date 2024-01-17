@@ -7,7 +7,6 @@ import '../../../theme/theme_helper.dart';
 import '../../../widgets/alerts.dart';
 
 Widget coursesHeader(BuildContext context, double horizontalMargin) {
-
   String? currUid = Provider.of<AppState>(context).userUid;
 
   return Padding(
@@ -16,16 +15,19 @@ Widget coursesHeader(BuildContext context, double horizontalMargin) {
       leading: IconButton(
           icon: const Icon(Icons.add_circle_outline),
           color: appTheme.black900,
-          onPressed: () =>
-              onTapInsertFolderAlert(
-                  context: context,
-                  title: 'Create Folder',
-                  icon: const Icon(Icons.folder),
-                  labelText: 'Name the new folder',
-                  buttonText: 'Create',
-                  userUid: currUid ?? 'was null')),
+          onPressed: () => onTapInsertFolderAlert(
+              context: context,
+              title: 'Create Folder',
+              icon: const Icon(Icons.create_new_folder),
+              labelText: 'Name the new folder',
+              buttonText: 'Create',
+              userUid: currUid ?? 'was null',
+              useCase: 'add')),
       title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
-      trailing: IconButton(icon: Icon(Icons.create_new_folder, color: appTheme.black900), onPressed: () {  },),
+      trailing: IconButton(
+        icon: Icon(Icons.create_new_folder_outlined, color: appTheme.black900),
+        onPressed: () {},
+      ),
     ),
   );
 }

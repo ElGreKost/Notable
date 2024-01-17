@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notable/app_state.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +19,7 @@ void onPressedCreateAlert(
     desc: desc,
     buttons: [
       DialogButton(
+          color: theme.colorScheme.primary.withOpacity(0.9),
           onPressed: () {
             Navigator.pop(context);
             onPressed();
@@ -36,7 +36,9 @@ void onTapInsertFolderAlert(
     required Icon icon,
     required String labelText,
     required String buttonText,
-    required String userUid}) {
+    required String userUid,
+      required String useCase
+    }) {
   TextEditingController controller = TextEditingController();
 
   Alert(
@@ -51,10 +53,15 @@ void onTapInsertFolderAlert(
       DialogButton(
         onPressed: () {
           String folderName = controller.text;
-          Provider.of<AppState>(context, listen: false).addFolder(folderName);
+          if (useCase == 'add') {
+            Provider.of<AppState>(context, listen: false).addNote(folderName);
+          } else if (useCase == 'rename') {
+            Provider.of<AppState>(context, listen: false).rename(folderName);
+          }
           Navigator.of(context).pop();
         },
-        child: Text(buttonText, style: const TextStyle(color: Colors.white, fontSize: 20)),
+        color: theme.colorScheme.primary.withOpacity(0.9),
+        child: Text(buttonText, style: TextStyle(color: appTheme.whiteA700, fontSize: 20.h)),
       )
     ],
   ).show();

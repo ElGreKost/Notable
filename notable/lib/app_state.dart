@@ -33,7 +33,7 @@ class AppState extends ChangeNotifier {
 
   String get title => _currFolder['folderName'];
 
-  void setText(newText) async {
+  void setText(newText) async { // todo to make it read cheaper we could save somewhere the currFolderUid
     var querySnapshot = await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -44,6 +44,23 @@ class AppState extends ChangeNotifier {
           int currFolderIdx = _folders.indexWhere((folder) => folder['folderName'] == title);
           _folders[currFolderIdx]['content'] = newText;
           currFolder['content'] = newText;
+          notifyListeners();
+        }
+      }
+    }
+  }
+
+  void rename(newFolderName) async { // todo to make it read cheaper we could save somewhere the currFolderUid
+    var querySnapshot = await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      for (var doc in querySnapshot.docs) {
+        var folderContents = doc.data();
+        if (folderContents['folderName'] == title) {
+          await doc.reference.update({'folderName': newFolderName});
+          int currFolderIdx = _folders.indexWhere((folder) => folder['folderName'] == title);
+          _folders[currFolderIdx]['folderName'] = newFolderName;
+          currFolder['folderName'] = newFolderName;
           notifyListeners();
         }
       }
@@ -66,12 +83,20 @@ class AppState extends ChangeNotifier {
     return names;
   }
 
-  void addFolder(String folderName) async {
+  void addNote(String folderName) async {
     // todo Giannis make sure folderName is unique in the database
     await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').add({
       'folderName': folderName, // Use the text from the controller
       'content': '',
       'userUid': userUid
+    });
+    _folders.add({'folderName': folderName, 'content': '', 'userUid': userUid});
+    notifyListeners();
+  }
+  void addFolder(String folderName) async {
+    // todo Achilleas
+    await FirebaseFirestore.instance.collection('users').doc(userUid).set({
+      'folderName': folderName, // Use the text from the controller
     });
     _folders.add({'folderName': folderName, 'content': '', 'userUid': userUid});
     notifyListeners();
