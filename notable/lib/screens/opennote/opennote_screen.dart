@@ -10,7 +10,8 @@ class OpennoteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String ocrText = Provider.of<AppState>(context).text ?? '';
+    final String ocrText = Provider.of<AppState>(context).text ?? 'no text';
+    final String noteTitle = Provider.of<AppState>(context).title ?? 'no title';
     textController.text = ocrText;
 
     return SafeArea(
@@ -19,7 +20,7 @@ class OpennoteScreen extends StatelessWidget {
           backgroundColor: theme.colorScheme.primary,
           elevation: 0,
           leading: icons.logoWidget(context: context),
-          title: Text('Note\'s Name', style: CustomTextStyles.titleMediumWhiteA700),
+          title: Text(noteTitle, style: CustomTextStyles.titleMediumWhiteA700),
           centerTitle: true,
           actions: _buildActionButtons(context),
         ),
@@ -57,7 +58,13 @@ class OpennoteScreen extends StatelessWidget {
   }
 
   List<IconButton> _buildActionButtons(BuildContext context) => [
-        IconButton(icon: Icon(Icons.published_with_changes, color: appTheme.whiteA700), onPressed: () {}),
-        IconButton(icon: Icon(Icons.share, color: appTheme.whiteA700), onPressed: () {})
+        IconButton(icon: Icon(Icons.published_with_changes, color: appTheme.whiteA700),
+            onPressed: () {
+                Provider.of<AppState>(context, listen: false).setText(textController.text);
+            }),
+        IconButton(icon: Icon(Icons.share, color: appTheme.whiteA700), onPressed: () {}),
+        IconButton(
+            icon: Icon(Icons.camera_alt_outlined, color: appTheme.whiteA700),
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.cameraScreen))
       ];
 }

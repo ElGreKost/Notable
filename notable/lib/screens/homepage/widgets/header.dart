@@ -60,7 +60,7 @@ Widget myprofileSingoutButtons({context, maxWidth}) {
         onPressed: () async {
           // Perform logout
           await authService.signOut();
-          Navigator.pushNamed(context, AppRoutes.loginsignupScreen1);
+          Navigator.pushNamed(context, AppRoutes.loginScreen);
         }),
   );
   return SizedBox(

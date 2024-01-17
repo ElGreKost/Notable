@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
       create: (BuildContext context) => AppState(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Notable',
         theme: theme,
-        initialRoute: AppRoutes.loginsignupScreen1,
+        initialRoute: AppRoutes.loginScreen,
         routes: AppRoutes.routes,
       ),
     );

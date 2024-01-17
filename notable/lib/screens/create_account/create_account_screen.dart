@@ -6,8 +6,8 @@ import '../../app_state.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_floating_text_field.dart';
 
-class CreateAccountScreen extends StatelessWidget {
-  CreateAccountScreen({Key? key}) : super(key: key);
+class EditProfileScreen extends StatelessWidget {
+  EditProfileScreen({Key? key}) : super(key: key);
 
   TextEditingController nameController = TextEditingController();
 

@@ -33,7 +33,10 @@ Widget folderListTile(context, folderName) {
   return Container(
     decoration: BoxDecoration(color: theme.colorScheme.onPrimaryContainer, borderRadius: BorderRadius.circular(15)),
     child: ListTile(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.opennoteScreen),
+      onTap: () {
+        Provider.of<AppState>(context, listen: false).setCurrFolder(folderName);
+        Navigator.pushNamed(context, AppRoutes.opennoteScreen);
+        },
       leading: IconButton(
           icon: Icon(Icons.delete_outline, color: appTheme.black900),
           onPressed: () => Provider.of<AppState>(context, listen: false).deleteFolder(folderName)),

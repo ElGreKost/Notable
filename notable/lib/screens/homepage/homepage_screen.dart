@@ -38,9 +38,8 @@ class HomepageScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: EdgeInsets.only(right: 9.h),
-                child: footerButtons(context),
-              ),
+                  padding: EdgeInsets.only(right: 9.h),
+                  child: Icon(Icons.file_upload_outlined, color: appTheme.black900)),
             ),
           ],
         ),

@@ -1,8 +1,11 @@
+// import 'dart:js_interop';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppState extends ChangeNotifier {
+  // User
   User? _user;
 
   void setUser(User? user) {
@@ -16,16 +19,38 @@ class AppState extends ChangeNotifier {
 
   String? get userDisplayName => _user!.email!.split('@').first;
 
-  // used in camera. don't use provider do argument pass Drill Down
-  String? _text;
+  // Current Folder
+  Map<String, dynamic> _currFolder = {};
 
-  String? get text => _text;
+  Map<String, dynamic> get currFolder => _currFolder;
 
-  void setText(String? newText) {
-    _text = newText;
+  void setCurrFolder(String folderName) {
+    _currFolder = folders.firstWhere((folder) => folder['folderName'] == folderName);
     notifyListeners();
   }
 
+  String get text => _currFolder['content'];
+
+  String get title => _currFolder['folderName'];
+
+  void setText(newText) async {
+    var querySnapshot = await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      for (var doc in querySnapshot.docs) {
+        var folderContents = doc.data();
+        if (folderContents['folderName'] == title) {
+          await doc.reference.update({'content': newText});
+          int currFolderIdx = _folders.indexWhere((folder) => folder['folderName'] == title);
+          _folders[currFolderIdx]['content'] = newText;
+          currFolder['content'] = newText;
+          notifyListeners();
+        }
+      }
+    }
+  }
+
+  // Folders
   List<Map<String, dynamic>> _folders = []; // todo make it synchronous??
 
   List<Map<String, dynamic>> get folders => _folders;
@@ -34,11 +59,12 @@ class AppState extends ChangeNotifier {
     _folders = newFolders;
     notifyListeners();
   }
+
   List<String> get folderNames {
-  var names = _folders.map((folder) => folder['folderName'] as String).toList();
-  names.sort((a, b) => a.compareTo(b));
-  return names;
-}
+    var names = _folders.map((folder) => folder['folderName'] as String).toList();
+    names.sort((a, b) => a.compareTo(b));
+    return names;
+  }
 
   void addFolder(String folderName) async {
     // todo Giannis make sure folderName is unique in the database
@@ -76,6 +102,7 @@ class AppState extends ChangeNotifier {
       print('Error deleting folder: $e');
     }
   }
+
   void updateDisplayName(String newDisplayName) async {
     try {
       // Ensure that the _user property is not null before proceeding
@@ -95,5 +122,4 @@ class AppState extends ChangeNotifier {
       print('Error updating display name: $error');
     }
   }
-
 }

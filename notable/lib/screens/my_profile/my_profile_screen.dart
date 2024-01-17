@@ -94,7 +94,7 @@ class MyProfileScreen extends StatelessWidget {
         margin: EdgeInsets.only(left: 16.h),
         buttonStyle: CustomButtonStyles.fillLime,
         buttonTextStyle: theme.textTheme.titleLarge!,
-        onPressed: () => Navigator.pushNamed(context, AppRoutes.createAccountScreen),
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.editProfileScreen),
         alignment: Alignment.bottomLeft);
   }
 }

@@ -195,7 +195,7 @@ class GlobalWidgets {
 
   Widget logoWidget({required context, width, height}) => GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoutes.homepageScreen),
-      child: Image.asset(ImageConstant.imgLogo, width: width ?? 69.h, height: height ?? 116.v));
+      child: Image.asset('assets/images/logo.png', width: width ?? 69.h, height: height ?? 116.v));
 }
 
 
