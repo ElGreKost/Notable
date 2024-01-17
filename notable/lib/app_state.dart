@@ -43,7 +43,7 @@ class AppState extends ChangeNotifier {
           await doc.reference.update({'content': newText});
           int currFolderIdx = _folders.indexWhere((folder) => folder['folderName'] == title);
           _folders[currFolderIdx]['content'] = newText;
-          currFolder['content'] = newText;
+          _currFolder['content'] = newText;
           notifyListeners();
         }
       }
@@ -60,7 +60,7 @@ class AppState extends ChangeNotifier {
           await doc.reference.update({'folderName': newFolderName});
           int currFolderIdx = _folders.indexWhere((folder) => folder['folderName'] == title);
           _folders[currFolderIdx]['folderName'] = newFolderName;
-          currFolder['folderName'] = newFolderName;
+          _currFolder['folderName'] = newFolderName;
           notifyListeners();
         }
       }

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -6,10 +5,10 @@ import '../../../app_state.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/alerts.dart';
 
-class FoldersListView extends StatelessWidget {
+class docListView extends StatelessWidget {
   final List<String> folderNames;
 
-  const FoldersListView({Key? key, required this.folderNames}) : super(key: key);
+  const docListView({Key? key, required this.folderNames}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +20,24 @@ class FoldersListView extends StatelessWidget {
         itemCount: folderNames.length,
         itemBuilder: (context, index) {
           String folderName = folderNames[index];
-          return folderListTile(context, folderName);
+          bool isNote = (index % 2) == 1;
+          return docListTile(context, folderName, isNote);
         },
       ),
     );
   }
 }
 
-Widget folderListTile(context, folderName) {
+Widget docListTile(context, folderName, bool isNote) {
+  // good folder colors Warm Taupe {good red} (0xff9E786C), Cool Grey (0xff8A9A9A), Soft Sage {light grey} (0xff97A69D),
+  // Pale Olive (0xffB0B089), Heather Grey {lighter pale olive} (B3AB9D), Camel {brownish} (B8A690), Sea Foam {Pale Olive + Light mint} (93A698)
+  // Dusty Aqua {blue + green} (5B9B8A), OYSTER BAY {soft blue} (D4E6E5), Pewter {soft blue grey} (96A3A6),
+  // MORNING MIST {grayish-green inviting} (E5E5E5), LINEN {GOOD FOR BACKGROUND} (FDF6E3), TEA GREEN {to replace notes color} (D0F0C0)
   return Container(
-    decoration: BoxDecoration(color: theme.colorScheme.onPrimaryContainer, borderRadius: BorderRadius.circular(15)),
+    decoration: BoxDecoration(
+        color: isNote ? theme.colorScheme.onPrimaryContainer : const Color(0xffe5e5e5),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [BoxShadow(color: appTheme.gray400, blurRadius: 15.h, offset: const Offset(10, 5))]),
     child: ListTile(
       onTap: () {
         Provider.of<AppState>(context, listen: false).setCurrFolder(folderName);
@@ -47,13 +54,15 @@ Widget folderListTile(context, folderName) {
       ),
       title: Center(
           child: Text(folderName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),
-      trailing: popupMenu(context),
+      trailing: popupMenu(context, folderName),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     ),
   );
 }
 
-Widget popupMenu(BuildContext context) {
+Widget popupMenu(BuildContext context, String folderName) {
+  // the folderName is passed because he have to declare the the activeDocument is the one that we clicked upon.(provider)
+  Provider.of<AppState>(context, listen: false).setCurrFolder(folderName);
   return PopupMenuButton(
     color: theme.colorScheme.onPrimaryContainer.withOpacity(0.6),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.h)),

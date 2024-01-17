@@ -31,7 +31,7 @@ class HomepageScreen extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-                child: FoldersListView(folderNames: folderNames),
+                child: docListView(folderNames: folderNames),
               ),
             ),
             SizedBox(height: 24.v),
