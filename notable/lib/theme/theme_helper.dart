@@ -150,9 +150,10 @@ class ColorSchemes {
     primary: Color(0XFF4C8C4A),
     secondaryContainer: Color(0X00449EFF),
 
+
     // On colors(text colors)
     onPrimary: Color(0XFF212B27),
-    onPrimaryContainer: Color(0XFFC8E6C9),
+    onPrimaryContainer: Color(0XFFD0F0C0),
   );
 }
 
