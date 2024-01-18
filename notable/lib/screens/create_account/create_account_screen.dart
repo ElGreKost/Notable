@@ -93,6 +93,7 @@ class EditProfileScreen extends StatelessWidget {
         controller: TextEditingController(text: displayName),
         labelText: " Name",
         labelStyle: theme.textTheme.titleMedium!,
-        hintText: displayName);
+        hintText: displayName,
+    );
   }
 }

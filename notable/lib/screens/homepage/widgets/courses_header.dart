@@ -22,7 +22,8 @@ Widget coursesHeader(BuildContext context, double horizontalMargin) {
               labelText: 'Name the new folder',
               buttonText: 'Create',
               userUid: currUid ?? 'was null',
-              useCase: 'add')),
+              useCase: 'add', tileFolderName: ''),
+      ),
       title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
       trailing: IconButton(
         icon: Icon(Icons.create_new_folder_outlined, color: appTheme.black900),

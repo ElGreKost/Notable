@@ -37,7 +37,8 @@ void onTapInsertFolderAlert(
     required String labelText,
     required String buttonText,
     required String userUid,
-      required String useCase
+      required String useCase,
+      required String tileFolderName // todo maybe create new widget that will have this extra feature
     }) {
   TextEditingController controller = TextEditingController();
 
@@ -52,11 +53,12 @@ void onTapInsertFolderAlert(
     buttons: [
       DialogButton(
         onPressed: () {
-          String folderName = controller.text;
+          String newFolderName = controller.text;
           if (useCase == 'add') {
-            Provider.of<AppState>(context, listen: false).addNote(folderName);
+            Provider.of<AppState>(context, listen: false).addNote(newFolderName);
           } else if (useCase == 'rename') {
-            Provider.of<AppState>(context, listen: false).rename(folderName);
+            Provider.of<AppState>(context, listen: false).setCurrFolder(tileFolderName);
+            Provider.of<AppState>(context, listen: false).renameDoc(newFolderName);
           }
           Navigator.of(context).pop();
         },

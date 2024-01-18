@@ -1,8 +1,12 @@
 // import 'dart:js_interop';
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AppState extends ChangeNotifier {
   // User
@@ -25,7 +29,7 @@ class AppState extends ChangeNotifier {
   Map<String, dynamic> get currFolder => _currFolder;
 
   void setCurrFolder(String folderName) {
-    _currFolder = folders.firstWhere((folder) => folder['folderName'] == folderName);
+    _currFolder = _folders.firstWhere((folder) => folder['folderName'] == folderName);
     notifyListeners();
   }
 
@@ -33,7 +37,8 @@ class AppState extends ChangeNotifier {
 
   String get title => _currFolder['folderName'];
 
-  void setText(newText) async { // todo to make it read cheaper we could save somewhere the currFolderUid
+  void setText(newText) async {
+    // todo to make it read cheaper we could save somewhere the currFolderUid
     var querySnapshot = await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -50,7 +55,8 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  void rename(newFolderName) async { // todo to make it read cheaper we could save somewhere the currFolderUid
+  void renameDoc(newFolderName) async {
+    // todo to make it read cheaper we could save somewhere the currFolderUid
     var querySnapshot = await FirebaseFirestore.instance.collection('users').doc(userUid).collection('folders').get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -93,6 +99,7 @@ class AppState extends ChangeNotifier {
     _folders.add({'folderName': folderName, 'content': '', 'userUid': userUid});
     notifyListeners();
   }
+
   void addFolder(String folderName) async {
     // todo Achilleas
     await FirebaseFirestore.instance.collection('users').doc(userUid).set({
@@ -136,8 +143,6 @@ class AppState extends ChangeNotifier {
 
         // Update the display name
         await _user!.updateDisplayName(newDisplayName);
-
-        // Update the display name in the local state
         _user = FirebaseAuth.instance.currentUser;
         notifyListeners();
 
@@ -145,6 +150,28 @@ class AppState extends ChangeNotifier {
       }
     } catch (error) {
       print('Error updating display name: $error');
+    }
+  }
+
+  void updateImage() async {
+    // Pick an image from the device using image_picker
+    XFile? imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    // Upload the image to Firebase Storage
+    String? imageUrl;
+    if (imageFile != null) {
+      Reference storageReference = FirebaseStorage.instance.ref().child('images/${imageFile.path.split('/').last}');
+      UploadTask uploadTask = storageReference.putFile(File(imageFile.path));
+      await uploadTask.whenComplete(() async {
+        await uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) {
+          imageUrl = downloadUrl;
+        });
+      });
+
+      // Update the user profile data in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(_user?.uid).update({'imageUrl': imageUrl});
+      _user = FirebaseAuth.instance.currentUser;
+      notifyListeners();
     }
   }
 }
