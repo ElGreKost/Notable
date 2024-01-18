@@ -193,7 +193,6 @@ class _LoginsignupScreen1State extends State<LoginsignupScreen1> {
         // Call your AuthService method to send the password reset email
         await AuthService().sendPasswordResetEmail(email);
 
-        // TODO: show a success message e.g. "Password reset email sent"
         // For example, you can use a SnackBar to display a message to the user:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

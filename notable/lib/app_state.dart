@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
+
 class AppState extends ChangeNotifier {
   // User
   User? _user;
@@ -21,7 +22,8 @@ class AppState extends ChangeNotifier {
 
   String? get userEmail => _user?.email;
 
-  String? get userDisplayName => _user!.email!.split('@').first;
+  String? get userDisplayName => _user?.displayName ?? (_user != null ? _user!.email!.split('@').first : null);
+
 
   // Current Folder
   Map<String, dynamic> _currFolder = {};
@@ -137,6 +139,7 @@ class AppState extends ChangeNotifier {
 
   void updateDisplayName(String newDisplayName) async {
     try {
+
       // Ensure that the _user property is not null before proceeding
       if (_user != null) {
         print('Before update - Current display name: ${_user!.displayName}');
