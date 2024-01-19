@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'backend/app_state.dart';
 import 'backend/feature_tester.dart';
+import 'backend/tree_note_manager.dart';
 import 'firebase_options.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -14,7 +15,6 @@ var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
 
   // ThemeHelper().changeTheme('primary');
   runApp(const MyApp());
@@ -25,19 +25,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AppState>(
-      create: (BuildContext context) => AppState(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context) => AppState()),
+        ChangeNotifierProvider(create: (BuildContext context) => TreeNoteManager()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Notable',
-        theme: ThemeData.dark(),
-        // initialRoute: AppRoutes.loginScreen,
-        // routes: AppRoutes.routes,
-        home: TreeNoteManagerTestPage()
+        theme: theme,
+        initialRoute: AppRoutes.loginScreen,
+        routes: AppRoutes.routes,
+        // home: TreeNoteManagerTestPage()
       ),
     );
   }
 }
-
-
-

@@ -65,6 +65,7 @@ Widget docListTile(context, folderName, bool isNote) {
     );
   }
 
+  // The List Tile
   return Container(
     decoration: BoxDecoration(
         color: isNote ? theme.colorScheme.onPrimaryContainer : const Color(0xffe5e5e5),

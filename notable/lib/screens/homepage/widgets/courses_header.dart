@@ -18,7 +18,7 @@ Widget coursesHeader(BuildContext context, double horizontalMargin) {
           onPressed: () => onTapInsertFolderAlert(
               context: context,
               title: 'Create Folder',
-              icon: const Icon(Icons.create_new_folder),
+              icon: const Icon(Icons.published_with_changes),
               labelText: 'Name the new folder',
               buttonText: 'Create',
               userUid: currUid ?? 'was null',

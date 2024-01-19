@@ -8,7 +8,7 @@ class TreeNoteManagerTestPage extends StatefulWidget {
 }
 
 class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
-  final TreeNoteManager _manager = TreeNoteManager('23');
+  final TreeNoteManager _manager = TreeNoteManager();
   final TextEditingController _folderNameController = TextEditingController();
   final TextEditingController _noteTitleController = TextEditingController();
   final TextEditingController _noteContentController = TextEditingController();
@@ -70,6 +70,7 @@ class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    _manager.setUserUid('15');
     return Scaffold(
       appBar: AppBar(
         title: Text('TreeNoteManager Test'),

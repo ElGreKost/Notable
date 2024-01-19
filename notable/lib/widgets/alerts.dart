@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notable/backend/app_state.dart';
+import 'package:notable/backend/tree_note_manager.dart';
 import 'package:provider/provider.dart';
 import '../core/utils/size_utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -55,6 +56,7 @@ void onTapInsertFolderAlert(
         onPressed: () {
           String newFolderName = controller.text;
           if (useCase == 'add') {
+            Provider.of<TreeNoteManager>(context, listen: false).createNote(newFolderName, '');
             Provider.of<AppState>(context, listen: false).addNote(newFolderName);
           } else if (useCase == 'rename') {
             Provider.of<AppState>(context, listen: false).setCurrFolder(tileFolderName);

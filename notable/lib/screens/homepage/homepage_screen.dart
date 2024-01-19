@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../backend/tree_note_manager.dart';
 import 'widgets/export_widgets.dart';
 import '../../core/app_export.dart';
 import '../../backend/app_state.dart';
@@ -10,8 +11,13 @@ class HomepageScreen extends StatelessWidget {
     mediaQueryData = MediaQuery.of(context);
 
     double horizontalMargin = 40.h;
-    List<String> folderNames = Provider.of<AppState>(context).folderNames;
-    String? displayName = Provider.of<AppState>(context).userDisplayName;
+    var appState = Provider.of<AppState>(context);
+    List<String> folderNames = appState.folderNames;
+    String? displayName = appState.userDisplayName;
+    String? userUid = appState.userUid;
+    var noteManager = Provider.of<TreeNoteManager>(context);
+    noteManager.setUserUid(userUid);
+    // print('read and initialized root path with userUid: ${noteManager.currentFolderRef}');
     return SafeArea(
       child: Scaffold(
         body: Column(
