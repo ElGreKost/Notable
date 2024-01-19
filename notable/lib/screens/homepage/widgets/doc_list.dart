@@ -20,6 +20,9 @@ class docListView extends StatelessWidget {
     List<String> folderNames = folders.map((folder) => folder['name'] as String? ?? 'deprecated store format').toList();
     List<String> noteNames = notes.map((note) => note['title'] as String? ?? 'was null note').toList();
     List<String> docNames = [...folderNames, ...noteNames];
+    List<String> folderIds = folders.map((folder) => folder['id'] as String? ?? 'id error').toList();
+    List<String> noteIds = notes.map((note) => note['id'] as String? ?? 'id error').toList();
+    List<String> docIds = [...folderIds, ...noteIds];
     print(docNames);
 
     return Expanded(
@@ -31,15 +34,15 @@ class docListView extends StatelessWidget {
         itemBuilder: (context, index) {
           bool isFolder = index < folderNames.length ? true : false;
           String docName = docNames[index];
-          String? folderId = index < folderNames.length ? folders[index]['id'] : null;
-          return docListTile(context, docName, folderId, isFolder);
+          String docId = docIds[index];
+          return docListTile(context, docName, docId, isFolder);
         },
       ),
     );
   }
 }
 
-Widget docListTile(context, String docName, String? folderId, bool isFolder) {
+Widget docListTile(context, String docName, String docId, bool isFolder) {
   // good folder colors Warm Taupe {good red} (0xff9E786C), Cool Grey (0xff8A9A9A), Soft Sage {light grey} (0xff97A69D),
   // Pale Olive (0xffB0B089), Heather Grey {lighter pale olive} (B3AB9D), Camel {brownish} (B8A690), Sea Foam {Pale Olive + Light mint} (93A698)
   // Dusty Aqua {blue + green} (5B9B8A), OYSTER BAY {soft blue} (D4E6E5), Pewter {soft blue grey} (96A3A6),
@@ -71,7 +74,7 @@ Widget docListTile(context, String docName, String? folderId, bool isFolder) {
                         buttonText: 'Rename',
                         userUid: '',
                         useCase: 'rename',
-                        tileFolderName: folderName,
+                        docToRename: {'id': docId, 'type': isFolder ? 'folder' : 'note'}, // todo check what happens with not present fields
                       ),
                 )))
       ],
@@ -87,7 +90,7 @@ Widget docListTile(context, String docName, String? folderId, bool isFolder) {
     child: ListTile(
       onTap: () {
         if (isFolder) {
-          Provider.of<TreeNoteManager>(context, listen: false).navigateToSubfolder(folderId!);
+          Provider.of<TreeNoteManager>(context, listen: false).navigateToSubfolder(docId!);
         } else {
           Provider.of<AppState>(context, listen: false).setCurrFolder(docName);
           Navigator.pushNamed(context, AppRoutes.opennoteScreen);

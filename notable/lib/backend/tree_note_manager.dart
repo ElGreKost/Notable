@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class TreeNoteManager extends ChangeNotifier {
-
   late final DocumentReference _userRoot;
   String? _userUid;
 
@@ -37,11 +36,7 @@ class TreeNoteManager extends ChangeNotifier {
     CollectionReference targetCollection =
         _currentFolderRef != null ? _currentFolderRef!.collection('folders') : _userRoot.collection('folders');
     final docRef = targetCollection.doc();
-    final folder = {
-      'id': docRef.id,
-      'name': name,
-      'pid': _currentFolderRef?.id,
-    };
+    final folder = {'id': docRef.id, 'name': name, 'pid': _currentFolderRef?.id, 'type': 'folder'};
 
     await docRef.set(folder);
     _currSubfolders.add(folder);
@@ -62,7 +57,7 @@ class TreeNoteManager extends ChangeNotifier {
     }
 
     final noteDocRef = _currentFolderRef!.collection('notes').doc();
-    final note = {'id': noteDocRef.id, 'title': title, 'content': content};
+    final note = {'id': noteDocRef.id, 'title': title, 'content': content, 'type': 'note'};
 
     await noteDocRef.set(note);
     _currNotes.add(note);
@@ -121,6 +116,7 @@ class TreeNoteManager extends ChangeNotifier {
       'notes': notes,
     };
   }
+
   // Fetch all the data in cwd
   Future<Map<String, dynamic>> getCurrentFolderContent() async {
     if (_currentFolderRef == null) {
@@ -131,7 +127,9 @@ class TreeNoteManager extends ChangeNotifier {
 
     // Fetch subfolders
     final subfoldersSnapshot = await folderDocRef.collection('folders').get();
-    final subfolders = subfoldersSnapshot.docs.map((doc) => {'id': doc.id, 'name': doc.data()['name'], 'pid': doc.data()['pid']}).toList();
+    final subfolders = subfoldersSnapshot.docs
+        .map((doc) => {'id': doc.id, 'name': doc.data()['name'], 'pid': doc.data()['pid']})
+        .toList();
 
     // Fetch notes
     final notesSnapshot = await folderDocRef.collection('notes').get();
@@ -141,5 +139,39 @@ class TreeNoteManager extends ChangeNotifier {
       'folders': subfolders,
       'notes': notes,
     };
+  }
+
+  // Method to rename a folder or a note
+  Future<void> renameItem(String itemId, String newName, String itemType) async {
+    if (_currentFolderRef == null) {
+      throw Exception('No current folder selected');
+    }
+
+    CollectionReference collectionRef;
+    if (itemType == 'folder') {
+      collectionRef = _currentFolderRef!.collection('folders');
+    } else if (itemType == 'note') {
+      collectionRef = _currentFolderRef!.collection('notes');
+    } else {
+      throw Exception('Invalid item type');
+    }
+
+    DocumentReference itemRef = collectionRef.doc(itemId);
+    await itemRef.update(itemType == 'folder' ? {'name': newName} : {'title': newName});
+
+    // Update local data
+    if (itemType == 'folder') {
+      int idx = _currSubfolders.indexWhere((folder) => folder['id'] == itemId);
+      if (idx != -1) {
+        _currSubfolders[idx]['name'] = newName;
+      }
+    } else if (itemType == 'note') {
+      int idx = _currNotes.indexWhere((note) => note['id'] == itemId);
+      if (idx != -1) {
+        _currNotes[idx]['title'] = newName;
+      }
+    }
+
+    notifyListeners();
   }
 }
