@@ -12,7 +12,6 @@ class HomepageScreen extends StatelessWidget {
 
     double horizontalMargin = 40.h;
     var appState = Provider.of<AppState>(context);
-    List<String> folderNames = appState.folderNames;
     String? displayName = appState.userDisplayName;
     String? userUid = appState.userUid;
     var noteManager = Provider.of<TreeNoteManager>(context);
@@ -37,7 +36,7 @@ class HomepageScreen extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-                child: docListView(folderNames: folderNames),
+                child: const docListView(),
               ),
             ),
             SizedBox(height: 24.v),

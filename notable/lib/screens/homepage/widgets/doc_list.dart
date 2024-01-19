@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../../backend/app_state.dart';
+import '../../../backend/tree_note_manager.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/alerts.dart';
 
 class docListView extends StatelessWidget {
-  final List<String> folderNames;
 
-  const docListView({Key? key, required this.folderNames}) : super(key: key);
+  const docListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    List<String> folderNames = Provider.of<TreeNoteManager>(context).currSubfolders;
+    List<String> noteNames = Provider.of<TreeNoteManager>(context).currNotes;
+    List<String> docNames = [...folderNames, ...noteNames];
+
     return Expanded(
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         separatorBuilder: (context, index) => SizedBox(height: 24.v),
-        itemCount: folderNames.length,
+        itemCount: docNames.length,
         itemBuilder: (context, index) {
-          String folderName = folderNames[index];
+          String docName = docNames[index];
           bool isNote = (index % 2) == 1;
-          return docListTile(context, folderName, isNote);
+          return docListTile(context, docName, isNote);
         },
       ),
     );

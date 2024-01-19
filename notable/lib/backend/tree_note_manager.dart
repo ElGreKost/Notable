@@ -5,8 +5,19 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class TreeNoteManager extends ChangeNotifier {
   late final DocumentReference _userRoot;
-  DocumentReference? _currentFolderRef;
   String? _userUid;
+
+  DocumentReference? _currentFolderRef;
+
+  DocumentReference? get currentFolderRef => _currentFolderRef; // Reference to the current folder
+
+  // Create a new folder
+  List<String> _currSubfolders = [];
+
+  List<String> get currSubfolders => _currSubfolders;
+  List<String> _currNotes = [];
+
+  List<String> get currNotes => _currNotes;
 
   void setUserUid(String? userUid) {
     if (userUid == null) {
@@ -17,9 +28,6 @@ class TreeNoteManager extends ChangeNotifier {
     }
   }
 
-  DocumentReference? get currentFolderRef => _currentFolderRef; // Reference to the current folder
-
-  // Create a new folder
   Future<void> createFolder(String name) async {
     CollectionReference targetCollection =
         _currentFolderRef != null ? _currentFolderRef!.collection('folders') : _userRoot.collection('folders');
@@ -33,6 +41,7 @@ class TreeNoteManager extends ChangeNotifier {
     };
 
     await docRef.set(folder);
+    _currSubfolders.add(name);
 
     // Optionally, update the parent folder's subfolders array
     if (_currentFolderRef != _userRoot) {
@@ -53,16 +62,16 @@ class TreeNoteManager extends ChangeNotifier {
     final note = {'id': noteDocRef.id, 'title': title, 'content': content};
 
     await noteDocRef.set(note);
+    _currNotes.add(title);
     notifyListeners();
   }
 
   // Navigate to a subfolder
   Future<void> navigateToSubfolder(String folderId) async {
-    if (_currentFolderRef == null) {
-      _currentFolderRef = _userRoot.collection('folders').doc(folderId);
-    } else {
-      _currentFolderRef = _currentFolderRef!.collection('folders').doc(folderId);
-    }
+    _currentFolderRef = _currentFolderRef!.collection('folders').doc(folderId);
+    Map<String, dynamic> content = await getCurrentFolderContent();
+    _currSubfolders = content['folders'];
+    _currNotes = content['notes'];
     notifyListeners();
   }
 
@@ -82,6 +91,9 @@ class TreeNoteManager extends ChangeNotifier {
     } else {
       _currentFolderRef = _userRoot; // Move back to user root
     }
+    Map<String, dynamic> content = await getCurrentFolderContent();
+    _currSubfolders = content['folders'];
+    _currNotes = content['notes'];
     notifyListeners();
   }
 
