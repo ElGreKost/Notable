@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'tree_note_manager.dart';
 
 class TreeNoteManagerTestPage extends StatefulWidget {
+
   @override
   _TreeNoteManagerTestPageState createState() => _TreeNoteManagerTestPageState();
 }
 
 class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
-  final TreeNoteManager _manager = TreeNoteManager();
+  final TreeNoteManager _manager = TreeNoteManager('23');
   final TextEditingController _folderNameController = TextEditingController();
   final TextEditingController _noteTitleController = TextEditingController();
   final TextEditingController _noteContentController = TextEditingController();

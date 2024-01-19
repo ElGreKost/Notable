@@ -3,8 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class TreeNoteManager {
-  final CollectionReference _rootCollection = _firestore.collection('folders');
+  late final DocumentReference _userRoot;
   DocumentReference? _currentFolderRef;
+
+  TreeNoteManager(String userId) {
+    _userRoot = _firestore.collection('users').doc(userId);
+    _currentFolderRef = _userRoot; // Start at the user's root
+  }
 
   DocumentReference? get currentFolderRef => _currentFolderRef; // Reference to the current folder
 
@@ -12,13 +17,12 @@ class TreeNoteManager {
   Future<void> createFolder(String name) async {
     CollectionReference targetCollection = _currentFolderRef != null
         ? _currentFolderRef!.collection('subfolders')
-        : _rootCollection;
+        : _userRoot.collection('folders');
 
     final docRef = targetCollection.doc();
     final folder = {
       'id': docRef.id,
       'name': name,
-      // parentId can be omitted or kept for additional reference
       'parentId': _currentFolderRef?.id,
     };
 
@@ -47,7 +51,7 @@ class TreeNoteManager {
   // Navigate to a subfolder
   Future<void> navigateToSubfolder(String folderId) async {
     if (_currentFolderRef == null) {
-      _currentFolderRef = _rootCollection.doc(folderId);
+      _currentFolderRef = _userRoot.collection('folders').doc(folderId);
     } else {
       _currentFolderRef = _currentFolderRef!.collection('subfolders').doc(folderId);
     }
@@ -55,19 +59,18 @@ class TreeNoteManager {
 
   // Move up to the parent folder
   Future<void> moveToParentFolder() async {
-    if (_currentFolderRef == null) {
-      throw Exception('Already at the root level');
+    if (_currentFolderRef == null || _currentFolderRef!.path == _userRoot.path) {
+      throw Exception('Already at the user root level');
     }
 
     String path = _currentFolderRef!.path;
     List<String> pathSegments = path.split('/');
-    // Remove last two segments ('subfolders' and the folderId)
-    if (pathSegments.length > 2) {
+    if (pathSegments.length > 3) { // Considering 'users/{userId}/folders/...'
       pathSegments.removeRange(pathSegments.length - 2, pathSegments.length);
       String parentPath = pathSegments.join('/');
       _currentFolderRef = _firestore.doc(parentPath);
     } else {
-      _currentFolderRef = null; // At root level
+      _currentFolderRef = _userRoot; // Move back to user root
     }
   }
 

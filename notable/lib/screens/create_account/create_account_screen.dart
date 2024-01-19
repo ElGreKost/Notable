@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../app_state.dart';
+import '../../backend/app_state.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_floating_text_field.dart';
 
@@ -12,7 +12,6 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    mediaQueryData = MediaQuery.of(context);
     AppState appState = Provider.of<AppState>(context);
 
     // Set the initial value for the _nameController

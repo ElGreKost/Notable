@@ -5,7 +5,8 @@ import 'package:notable/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
-import 'app_state.dart';
+import 'backend/app_state.dart';
+import 'backend/feature_tester.dart';
 import 'firebase_options.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -29,9 +30,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Notable',
-        theme: theme,
-        initialRoute: AppRoutes.loginScreen,
-        routes: AppRoutes.routes,
+        theme: ThemeData.dark(),
+        // initialRoute: AppRoutes.loginScreen,
+        // routes: AppRoutes.routes,
+        home: TreeNoteManagerTestPage()
       ),
     );
   }

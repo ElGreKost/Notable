@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notable/app_state.dart';
+import 'package:notable/backend/app_state.dart';
 import 'package:provider/provider.dart';
 import '../core/utils/size_utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';

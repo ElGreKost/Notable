@@ -7,7 +7,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 
 import '../../core/utils/size_utils.dart';
 import '../../theme/custom_text_style.dart';
-import '../../app_state.dart';
+import '../../backend/app_state.dart';
 import '../../theme/theme_helper.dart';
 import '../textpreview/textpreview_page.dart';
 
