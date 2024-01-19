@@ -54,13 +54,14 @@ void onTapInsertFolderAlert(
     buttons: [
       DialogButton(
         onPressed: () {
-          String newFolderName = controller.text;
-          if (useCase == 'add') {
-            Provider.of<TreeNoteManager>(context, listen: false).createNote(newFolderName, '');
-            Provider.of<AppState>(context, listen: false).addNote(newFolderName);
+          String newName = controller.text;
+          if (useCase == 'addNote') {
+            Provider.of<TreeNoteManager>(context, listen: false).createNote(newName, '');
           } else if (useCase == 'rename') {
             Provider.of<AppState>(context, listen: false).setCurrFolder(tileFolderName);
-            Provider.of<AppState>(context, listen: false).renameDoc(newFolderName);
+            Provider.of<AppState>(context, listen: false).renameDoc(newName);
+          } else if (useCase == 'addFolder') {
+            Provider.of<TreeNoteManager>(context, listen: false).createFolder(newName);
           }
           Navigator.of(context).pop();
         },

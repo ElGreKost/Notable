@@ -22,12 +22,19 @@ Widget coursesHeader(BuildContext context, double horizontalMargin) {
               labelText: 'Name the new folder',
               buttonText: 'Create',
               userUid: currUid ?? 'was null',
-              useCase: 'add', tileFolderName: ''),
+              useCase: 'addNote', tileFolderName: ''),
       ),
       title: Center(child: Text("ΜΑΘΗΜΑΤΑ", style: CustomTextStyles.titleLargeBlack900)),
       trailing: IconButton(
         icon: Icon(Icons.create_new_folder_outlined, color: appTheme.black900),
-        onPressed: () {},
+        onPressed: () => onTapInsertFolderAlert(
+            context: context,
+            title: 'Create Folder',
+            icon: const Icon(Icons.published_with_changes),
+            labelText: 'Name the new folder',
+            buttonText: 'Create',
+            userUid: currUid ?? 'was null',
+            useCase: 'addFolder', tileFolderName: ''),
       ),
     ),
   );
