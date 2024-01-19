@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'tree_note_manager.dart';
+import 'package:provider/provider.dart';
+import 'tree_note_manager.dart'; // Make sure to import your TreeNoteManager
 
 class TreeNoteManagerTestPage extends StatefulWidget {
-
   @override
   _TreeNoteManagerTestPageState createState() => _TreeNoteManagerTestPageState();
 }
 
 class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
-  final TreeNoteManager _manager = TreeNoteManager();
   final TextEditingController _folderNameController = TextEditingController();
   final TextEditingController _noteTitleController = TextEditingController();
   final TextEditingController _noteContentController = TextEditingController();
   final TextEditingController _subfolderIdController = TextEditingController();
+
   String _displayContents = '';
   String _currentPath = 'Root';
 
@@ -26,12 +26,14 @@ class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
   }
 
   void _createFolder() async {
+    final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
     await _manager.createFolder(_folderNameController.text);
     _folderNameController.clear();
     _updateCurrentPathDisplay();
   }
 
   void _createNote() async {
+    final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
     await _manager.createNote(_noteTitleController.text, _noteContentController.text);
     _noteTitleController.clear();
     _noteContentController.clear();
@@ -39,19 +41,22 @@ class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
   }
 
   void _navigateToSubfolder() async {
+    final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
     await _manager.navigateToSubfolder(_subfolderIdController.text);
     _subfolderIdController.clear();
     _updateCurrentPathDisplay();
   }
 
   void _moveToParentFolder() async {
+    final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
     await _manager.moveToParentFolder();
     _updateCurrentPathDisplay();
   }
 
   void _fetchCurrentFolderContents() async {
     try {
-      var contents = await _manager.getCurrentFolderContent();
+      final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
+      var contents = await _manager.getCurrentFolderContentNames();
       setState(() {
         _displayContents = contents.toString();
       });
@@ -63,6 +68,7 @@ class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
   }
 
   void _updateCurrentPathDisplay() {
+    final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
     setState(() {
       _currentPath = _manager.currentFolderRef?.path ?? 'Root';
     });
@@ -70,7 +76,9 @@ class _TreeNoteManagerTestPageState extends State<TreeNoteManagerTestPage> {
 
   @override
   Widget build(BuildContext context) {
-    _manager.setUserUid('15');
+    final TreeNoteManager _manager = Provider.of<TreeNoteManager>(context, listen: false);
+    _manager.setUserUid('15'); // Set user UID, replace '15' with actual UID logic
+
     return Scaffold(
       appBar: AppBar(
         title: Text('TreeNoteManager Test'),

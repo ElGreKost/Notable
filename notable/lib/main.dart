@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Notable',
         theme: theme,
+        // theme: ThemeData.dark(),
         initialRoute: AppRoutes.loginScreen,
         routes: AppRoutes.routes,
         // home: TreeNoteManagerTestPage()

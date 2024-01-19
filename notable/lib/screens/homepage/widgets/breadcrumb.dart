@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
+import 'package:provider/provider.dart';
 
+import '../../../backend/tree_note_manager.dart';
 import '../../../theme/theme_helper.dart';
 
 class CustomBreadcrumb extends StatelessWidget {
@@ -44,6 +47,7 @@ class GradientBreadcrumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DocumentReference? currFolder = Provider.of<TreeNoteManager>(context).currentFolderRef;
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.all(8.0),

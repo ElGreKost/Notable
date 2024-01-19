@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class TreeNoteManager extends ChangeNotifier {
+
   late final DocumentReference _userRoot;
   String? _userUid;
 
@@ -12,18 +13,22 @@ class TreeNoteManager extends ChangeNotifier {
   DocumentReference? get currentFolderRef => _currentFolderRef; // Reference to the current folder
 
   // Create a new folder
-  List<String> _currSubfolders = [];
+  List<Map<String, dynamic>> _currSubfolders = [];
 
-  List<String> get currSubfolders => _currSubfolders;
-  List<String> _currNotes = [];
+  List<Map<String, dynamic>> get currSubfolders => _currSubfolders;
+  List<Map<String, dynamic>> _currNotes = [];
 
-  List<String> get currNotes => _currNotes;
+  List<Map<String, dynamic>> get currNotes => _currNotes;
 
-  void setUserUid(String? userUid) {
-    if (userUid == null) {
+  void setUserUid(String? userUid) async {
+    if (_userUid == null) {
       _userUid = userUid;
       _userRoot = _firestore.collection('users').doc(userUid);
       _currentFolderRef = _userRoot; // Start at the user's root
+      Map<String, dynamic> content = await getCurrentFolderContent();
+      _currSubfolders = content['folders'];
+      _currNotes = content['notes'];
+      print('Preexisting user\'s documents: $content \n $_currSubfolders, ||| $_currNotes');
       notifyListeners();
     }
   }
@@ -31,17 +36,15 @@ class TreeNoteManager extends ChangeNotifier {
   Future<void> createFolder(String name) async {
     CollectionReference targetCollection =
         _currentFolderRef != null ? _currentFolderRef!.collection('folders') : _userRoot.collection('folders');
-
     final docRef = targetCollection.doc();
     final folder = {
       'id': docRef.id,
       'name': name,
-      'parentId': _currentFolderRef?.id,
-      'subfolders': [],
+      'pid': _currentFolderRef?.id,
     };
 
     await docRef.set(folder);
-    _currSubfolders.add(name);
+    _currSubfolders.add(folder);
 
     // Optionally, update the parent folder's subfolders array
     if (_currentFolderRef != _userRoot) {
@@ -62,7 +65,7 @@ class TreeNoteManager extends ChangeNotifier {
     final note = {'id': noteDocRef.id, 'title': title, 'content': content};
 
     await noteDocRef.set(note);
-    _currNotes.add(title);
+    _currNotes.add(note);
     notifyListeners();
   }
 
@@ -98,7 +101,7 @@ class TreeNoteManager extends ChangeNotifier {
   }
 
   // Retrieve contents of the current folder
-  Future<Map<String, dynamic>> getCurrentFolderContent() async {
+  Future<Map<String, dynamic>> getCurrentFolderContentNames() async {
     if (_currentFolderRef == null) {
       throw Exception('No current folder selected');
     }
@@ -112,6 +115,27 @@ class TreeNoteManager extends ChangeNotifier {
     // Fetch notes
     final notesSnapshot = await folderDocRef.collection('notes').get();
     final notes = notesSnapshot.docs.map((doc) => doc.data()).toList();
+
+    return {
+      'folders': subfolders,
+      'notes': notes,
+    };
+  }
+  // Fetch all the data in cwd
+  Future<Map<String, dynamic>> getCurrentFolderContent() async {
+    if (_currentFolderRef == null) {
+      throw Exception('No current folder selected');
+    }
+
+    final folderDocRef = _currentFolderRef!;
+
+    // Fetch subfolders
+    final subfoldersSnapshot = await folderDocRef.collection('folders').get();
+    final subfolders = subfoldersSnapshot.docs.map((doc) => {'id': doc.id, 'name': doc.data()['name'], 'pid': doc.data()['pid']}).toList();
+
+    // Fetch notes
+    final notesSnapshot = await folderDocRef.collection('notes').get();
+    final notes = notesSnapshot.docs.map((doc) => {'id': doc.id, 'title': doc.data()['title']}).toList();
 
     return {
       'folders': subfolders,

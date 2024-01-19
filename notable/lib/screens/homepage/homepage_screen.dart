@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../backend/tree_note_manager.dart';
 import 'widgets/export_widgets.dart';
@@ -13,7 +14,7 @@ class HomepageScreen extends StatelessWidget {
     double horizontalMargin = 40.h;
     var appState = Provider.of<AppState>(context);
     String? displayName = appState.userDisplayName;
-    String? userUid = appState.userUid;
+    String? userUid = appState.userUid; // todo do it login signup
     var noteManager = Provider.of<TreeNoteManager>(context);
     noteManager.setUserUid(userUid);
     // print('read and initialized root path with userUid: ${noteManager.currentFolderRef}');
@@ -21,6 +22,7 @@ class HomepageScreen extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
+            // Text('currFoldREf: ${noteManager.currentFolderRef}\n currUserUid: $userUid'),
             header(context, 'Username: ${displayName!}', ImageConstant.imgUserImage),
             SizedBox(height: 24.v),
             Padding(
