@@ -14,6 +14,7 @@ class HomepageScreen extends StatelessWidget {
     var appState = Provider.of<AppState>(context);
     String? displayName = appState.userDisplayName;
     String? userUid = appState.userUid;
+    String? custom_img = appState.userImageUrl;
     var noteManager = Provider.of<TreeNoteManager>(context);
     noteManager.setUserUid(userUid);
     // print('read and initialized root path with userUid: ${noteManager.currentFolderRef}');
@@ -21,7 +22,7 @@ class HomepageScreen extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            header(context, 'Username: ${displayName!}', ImageConstant.imgUserImage),
+            header(context, 'Username: ${displayName!}', custom_img!),
             SizedBox(height: 24.v),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalMargin),

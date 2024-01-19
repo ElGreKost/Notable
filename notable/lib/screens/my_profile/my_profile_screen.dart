@@ -21,9 +21,11 @@ class MyProfileScreen extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    String? custom_img = Provider.of<AppState>(context).userImageUrl;
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -38,7 +40,7 @@ class MyProfileScreen extends StatelessWidget {
                     width: 428.h,
                     child: SingleChildScrollView(
                         child: Column(children: [
-                      _buildImageEditShare(context, ImageConstant.imgUserImage),
+                      _buildImageEditShare(context, custom_img!),
                       Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(

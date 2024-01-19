@@ -8,10 +8,13 @@ import '../../../widgets/custom_elevated_button.dart';
 import 'homepage_logo.dart';
 
 
-Row header(BuildContext context, String name, String imagePath) {
+Row header(BuildContext context, String name, String? imagePath) {
   var userInfo = ListTile(
       title: Text(name, maxLines: 2, overflow: TextOverflow.ellipsis, style: CustomTextStyles.titleMediumWhiteA700),
-      trailing: CircleAvatar(backgroundImage: AssetImage(imagePath), radius: 25.h,));
+      trailing: CircleAvatar(
+        backgroundImage: imagePath != null ? AssetImage(imagePath) : AssetImage('images/img_user_image.png'),
+        radius: 25.h,
+      ));
 
   return Row(children: [
     Container(width: 120.h, decoration: AppDecoration.fillPrimary, child: homePageLogo(context)),

@@ -13,7 +13,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppState appState = Provider.of<AppState>(context);
-
+    String? custom_img = Provider.of<AppState>(context).userImageUrl;
     // Set the initial value for the _nameController
     _nameController = TextEditingController(text: appState.userDisplayName ?? '');
 
@@ -46,7 +46,7 @@ class EditProfileScreen extends StatelessWidget {
             width: 428.h,
             child: Column(
               children: [
-                _buildPageHeadNavigation(context, ImageConstant.imgUserImage),
+                _buildPageHeadNavigation(context, custom_img!),
                 SizedBox(height: 12.v),
                 Expanded(
                   child: SingleChildScrollView(
@@ -105,7 +105,7 @@ class EditProfileScreen extends StatelessWidget {
               ),
               child: IconButton(
                 icon: Icon(Icons.add_circle, color: theme.colorScheme.primary, size: 53.h),
-                onPressed: () {},
+                onPressed: () => _updateUserProfilePhoto(context),
               ),
             ),
           ),
@@ -121,4 +121,8 @@ class EditProfileScreen extends StatelessWidget {
       controller: controller,
     );
   }
+}
+
+void _updateUserProfilePhoto(BuildContext context) {
+  Provider.of<AppState>(context, listen: false).updateImage();
 }

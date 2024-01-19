@@ -25,6 +25,9 @@ class AppState extends ChangeNotifier {
 
   String? get userDisplayName => _user?.displayName ?? (_user != null ? _user!.email!.split('@').first : null);
 
+  String? get userImageUrl => _user?.photoURL ?? 'assets/images/img_user_image.png';
+
+
 
   // Current Folder
   Map<String, dynamic> _currFolder = {};
