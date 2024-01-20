@@ -160,25 +160,28 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  void updateImage() async {
+  Future<void> updateImage() async {
     // Pick an image from the device using image_picker
     XFile? imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     // Upload the image to Firebase Storage
-    String? imageUrl;
     if (imageFile != null) {
-      Reference storageReference = FirebaseStorage.instance.ref().child('images/${imageFile.path.split('/').last}');
+      Reference storageReference =
+      FirebaseStorage.instance.ref().child('images/${imageFile.path.split('/').last}');
       UploadTask uploadTask = storageReference.putFile(File(imageFile.path));
       await uploadTask.whenComplete(() async {
         await uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) {
-          imageUrl = downloadUrl;
+          // Update the user's photoURL directly
+          _user?.updatePhotoURL(downloadUrl).then((_) {
+            // PhotoURL updated successfully
+            notifyListeners();
+          }).catchError((error) {
+            print('Error updating photoURL: $error');
+          });
         });
       });
-
-      // Update the user profile data in Firestore
-      await FirebaseFirestore.instance.collection('users').doc(_user?.uid).update({'imageUrl': imageUrl});
-      _user = FirebaseAuth.instance.currentUser;
-      notifyListeners();
     }
   }
+
+
 }

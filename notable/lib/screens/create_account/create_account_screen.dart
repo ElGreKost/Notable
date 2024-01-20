@@ -13,7 +13,8 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppState appState = Provider.of<AppState>(context);
-    String? custom_img = Provider.of<AppState>(context).userImageUrl;
+    String? custom_img = appState.userImageUrl;
+
     // Set the initial value for the _nameController
     _nameController = TextEditingController(text: appState.userDisplayName ?? '');
 
@@ -123,6 +124,16 @@ class EditProfileScreen extends StatelessWidget {
   }
 }
 
-void _updateUserProfilePhoto(BuildContext context) {
-  Provider.of<AppState>(context, listen: false).updateImage();
+void _updateUserProfilePhoto(BuildContext context) async {
+  print("Updating user profile photo...");
+
+  try {
+    // Call the updateImage function
+    await Provider.of<AppState>(context, listen: false).updateImage();
+
+    print("User profile photo updated successfully.");
+  } catch (e) {
+    print("Error updating user profile photo: $e");
+  }
 }
+
