@@ -7,6 +7,9 @@ class TreeNoteManager extends ChangeNotifier {
   late final DocumentReference _userRoot;
   String? _userUid;
 
+  List<String> _breadcrumb = ['Your notes'];
+
+  List<String> get breadcrumb => _breadcrumb;
   DocumentReference? _currentFolderRef;
 
   DocumentReference? get currentFolderRef => _currentFolderRef; // Reference to the current folder
@@ -75,24 +78,28 @@ class TreeNoteManager extends ChangeNotifier {
 
   // Move up to the parent folder
   Future<void> moveToParentFolder() async {
-    if (_currentFolderRef == null || _currentFolderRef!.path == _userRoot.path) {
-      throw Exception('Already at the user root level');
-    }
+    if (_breadcrumb.isNotEmpty) {
+      _breadcrumb.removeLast();
 
-    String path = _currentFolderRef!.path;
-    List<String> pathSegments = path.split('/');
-    if (pathSegments.length > 3) {
-      // Considering 'users/{userId}/folders/...'
-      pathSegments.removeRange(pathSegments.length - 2, pathSegments.length);
-      String parentPath = pathSegments.join('/');
-      _currentFolderRef = _firestore.doc(parentPath);
-    } else {
-      _currentFolderRef = _userRoot; // Move back to user root
+      if (_currentFolderRef == null || _currentFolderRef!.path == _userRoot.path) {
+        throw Exception('Already at the user root level');
+      }
+
+      String path = _currentFolderRef!.path;
+      List<String> pathSegments = path.split('/');
+      if (pathSegments.length > 3) {
+        // Considering 'users/{userId}/folders/...'
+        pathSegments.removeRange(pathSegments.length - 2, pathSegments.length);
+        String parentPath = pathSegments.join('/');
+        _currentFolderRef = _firestore.doc(parentPath);
+      } else {
+        _currentFolderRef = _userRoot; // Move back to user root
+      }
+      Map<String, dynamic> content = await getCurrentFolderContent();
+      _currSubfolders = content['folders'];
+      _currNotes = content['notes'];
+      notifyListeners();
     }
-    Map<String, dynamic> content = await getCurrentFolderContent();
-    _currSubfolders = content['folders'];
-    _currNotes = content['notes'];
-    notifyListeners();
   }
 
   // Retrieve contents of the current folder
@@ -115,6 +122,11 @@ class TreeNoteManager extends ChangeNotifier {
       'folders': subfolders,
       'notes': notes,
     };
+  }
+
+  void appendToBreadcrumb(currentFolderName) {
+    _breadcrumb.add(currentFolderName);
+    notifyListeners();
   }
 
   // Fetch all the data in cwd
@@ -174,4 +186,73 @@ class TreeNoteManager extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteItem(String itemId, String itemType) async {
+    if (_currentFolderRef == null) {
+      throw Exception('No current folder selected');
+    }
+
+    CollectionReference collectionRef;
+    if (itemType == 'folder') {
+      collectionRef = _currentFolderRef!.collection('folders');
+    } else if (itemType == 'note') {
+      collectionRef = _currentFolderRef!.collection('notes');
+    } else {
+      throw Exception('Invalid item type');
+    }
+
+    DocumentReference itemRef = collectionRef.doc(itemId);
+    await itemRef.delete();
+
+    // Update local data
+    if (itemType == 'folder') {
+      _currSubfolders.removeWhere((folder) => folder['id'] == itemId);
+    } else if (itemType == 'note') {
+      _currNotes.removeWhere((note) => note['id'] == itemId);
+    }
+
+    notifyListeners();
+  }
+
+  // Current Note
+  Map<String, dynamic> _currNote = {};
+
+  Map<String, dynamic> get currNote => _currNote;
+
+  // Set the current note based on its title
+  void setCurrNote(String title) {
+    try {
+      _currNote = _currNotes.firstWhere((note) => note['title'] == title);
+    } catch (e) {
+      // Handle the case where no note matches the title
+      _currNote = {}; // Reset to an empty map or handle appropriately
+    }
+    notifyListeners();
+  }
+
+  // Getters for text and title of the current note
+  String get text => _currNote['content'] ?? '';
+  String get title => _currNote['title'] ?? '';
+
+  // Update the text of the current note
+  void setText(String newText) async {
+    if (_currentFolderRef == null || _currNote.isEmpty) {
+      throw Exception('No current folder or note selected');
+    }
+
+    String noteId = _currNote['id'];
+    DocumentReference noteRef = _currentFolderRef!.collection('notes').doc(noteId);
+
+    await noteRef.update({'content': newText});
+
+    // Update the current note and the note list
+    _currNote['content'] = newText;
+    int noteIdx = _currNotes.indexWhere((note) => note['id'] == noteId);
+    if (noteIdx != -1) {
+      _currNotes[noteIdx]['content'] = newText;
+    }
+
+    notifyListeners();
+  }
+
 }

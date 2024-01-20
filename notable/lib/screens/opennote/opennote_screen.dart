@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../backend/app_state.dart';
+// import '../../backend/app_state.dart';
+import '../../backend/tree_note_manager.dart';
 import '../../core/app_export.dart';
 
 class OpennoteScreen extends StatelessWidget {
@@ -10,8 +11,8 @@ class OpennoteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String ocrText = Provider.of<AppState>(context).text ?? 'no text';
-    final String noteTitle = Provider.of<AppState>(context).title ?? 'no title';
+    final String ocrText = Provider.of<TreeNoteManager>(context).text ?? 'no text';
+    final String noteTitle = Provider.of<TreeNoteManager>(context).title ?? 'no title';
     textController.text = ocrText;
 
     return SafeArea(
@@ -60,7 +61,7 @@ class OpennoteScreen extends StatelessWidget {
   List<IconButton> _buildActionButtons(BuildContext context) => [
         IconButton(icon: Icon(Icons.published_with_changes, color: appTheme.whiteA700),
             onPressed: () {
-                Provider.of<AppState>(context, listen: false).setText(textController.text);
+                Provider.of<TreeNoteManager>(context, listen: false).setText(textController.text);
             }),
         IconButton(icon: Icon(Icons.share, color: appTheme.whiteA700), onPressed: () {}),
         IconButton(

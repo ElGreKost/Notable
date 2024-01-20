@@ -9,7 +9,7 @@ import '../../../widgets/alerts.dart';
 class docListView extends StatelessWidget {
   const docListView({Key? key}) : super(key: key);
 
-  @override
+  @override // todo simplify it
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> folders = Provider
         .of<TreeNoteManager>(context)
@@ -74,7 +74,7 @@ Widget docListTile(context, String docName, String docId, bool isFolder) {
                         buttonText: 'Rename',
                         userUid: '',
                         useCase: 'rename',
-                        docToRename: {'id': docId, 'type': isFolder ? 'folder' : 'note'}, // todo check what happens with not present fields
+                        docToRename: {'id': docId, 'type': isFolder ? 'folder' : 'note'},
                       ),
                 )))
       ],
@@ -90,9 +90,10 @@ Widget docListTile(context, String docName, String docId, bool isFolder) {
     child: ListTile(
       onTap: () {
         if (isFolder) {
-          Provider.of<TreeNoteManager>(context, listen: false).navigateToSubfolder(docId!);
+          Provider.of<TreeNoteManager>(context, listen: false).navigateToSubfolder(docId);
+          Provider.of<TreeNoteManager>(context, listen: false).appendToBreadcrumb(docName);
         } else {
-          Provider.of<AppState>(context, listen: false).setCurrFolder(docName);
+          Provider.of<TreeNoteManager>(context, listen: false).setCurrNote(docName);
           Navigator.pushNamed(context, AppRoutes.opennoteScreen);
         }
       },
@@ -104,7 +105,7 @@ Widget docListTile(context, String docName, String docId, bool isFolder) {
                 title: 'Delete Folder',
                 desc: 'The folder $docName will be deleted',
                 type: AlertType.none,
-                onPressed: () => Provider.of<AppState>(context, listen: false).deleteFolder(docName)),
+                onPressed: () => Provider.of<TreeNoteManager>(context, listen: false).deleteItem(docId, isFolder ? 'folder' : 'note')),
       ),
       title: Center(
           child: Text(docName, style: theme.textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis)),

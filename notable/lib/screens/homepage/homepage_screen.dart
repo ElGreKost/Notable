@@ -28,8 +28,14 @@ class HomepageScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
               child: GradientBreadcrumb(
-                breadcrumbs: const ['ΕΜΠ', 'ΗΜΜΥ', '4οΕτος', 'Χειμερινό'],
-                onTapBreadcrumb: (index) {},
+                breadcrumbs: noteManager.breadcrumb,
+                onTapBreadcrumb: (index) {
+                  int stepsToGoBack = noteManager.breadcrumb.length - 1 - index;
+                  for (int i = 0; i < stepsToGoBack; i++) {
+                    // Assuming you have a method to get the parent reference of the current folder
+                    noteManager.moveToParentFolder();
+                  }
+                },
               ),
             ),
             SizedBox(height: 21.v),
