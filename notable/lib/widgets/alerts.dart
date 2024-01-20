@@ -38,8 +38,9 @@ void onTapInsertFolderAlert(
     required String labelText,
     required String buttonText,
     required String userUid,
-      required String useCase,
-      required String tileFolderName // todo maybe create new widget that will have this extra feature
+    required String useCase,
+    required Map<String, dynamic> docToRename, // todo maybe create new widget that will have this extra feature
+
     }) {
   TextEditingController controller = TextEditingController();
 
@@ -55,14 +56,21 @@ void onTapInsertFolderAlert(
       DialogButton(
         onPressed: () {
           String newName = controller.text;
-          if (useCase == 'addNote') {
-            Provider.of<TreeNoteManager>(context, listen: false).createNote(newName, '');
-          } else if (useCase == 'rename') {
-            Provider.of<AppState>(context, listen: false).setCurrFolder(tileFolderName);
-            Provider.of<AppState>(context, listen: false).renameDoc(newName);
-          } else if (useCase == 'addFolder') {
-            Provider.of<TreeNoteManager>(context, listen: false).createFolder(newName);
+          switch (useCase) {
+            case 'addNote':
+              Provider.of<TreeNoteManager>(context, listen: false).createNote(newName, '');
+              break;
+            case 'rename':
+              print('id was : ${docToRename["id"]} \n type was ${docToRename['type']}');
+              Provider.of<TreeNoteManager>(context, listen: false).renameItem(docToRename['id'], newName, docToRename['type']);
+              // Provider.of<AppState>(context, listen: false).setCurrFolder(tileFolderName);
+              // Provider.of<AppState>(context, listen: false).renameDoc(newName);
+              break;
+            case 'addFolder':
+              Provider.of<TreeNoteManager>(context, listen: false).createFolder(newName);
+              break;
           }
+
           Navigator.of(context).pop();
         },
         color: theme.colorScheme.primary.withOpacity(0.9),
