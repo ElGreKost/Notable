@@ -4,7 +4,6 @@ import '../../../theme/theme_helper.dart';
 
 Widget homePageLogo(context) {
   return Row(
-    mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
