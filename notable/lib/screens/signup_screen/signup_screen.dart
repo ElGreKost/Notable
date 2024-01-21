@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
-import '../../widgets/alerts.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'package:notable/services/auth_service.dart';
@@ -28,7 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(
+        body: Stack(
           children: [
             Form(
               key: _formKey,
@@ -129,7 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
             emailController.text,
             passwordController.text,
           );
-          await FirebaseFirestore.instance.collection('users').add(<String, dynamic>{'email': emailController.text});
+
 
           Provider.of<AppState>(context, listen: false).setUser(currUser);
           Navigator.pushNamed(context, AppRoutes.homepageScreen);
