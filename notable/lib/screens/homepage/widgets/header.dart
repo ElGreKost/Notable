@@ -18,7 +18,7 @@ Row header(BuildContext context, String name, String? imagePath) {
 
   return Row(crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-    Container(width: 120.h, decoration: AppDecoration.fillPrimary, child: homePageLogo(context)),
+    Container(decoration: AppDecoration.fillPrimary, child: homePageLogo(context)),
     Expanded(
       child: Column(children: [
         Container(
