@@ -64,6 +64,6 @@ class HomepageScreen extends StatelessWidget {
   Widget _buildFooter(BuildContext context) => Container(
         height: 40.v,
         decoration: AppDecoration.fillPrimary,
-        child: Center(child: Text("Contact us:    theTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700)),
+        child: Center(child: Text("Contact us:    theNotableTeam@mail.com", style: CustomTextStyles.bodyLargeWhiteA700)),
       );
 }
