@@ -30,9 +30,11 @@ class TextPreviewPage extends StatelessWidget {
               children: [
                 Card(
                   elevation: 4,
-                  child: Padding(
-                    padding: EdgeInsets.all(16.h),
-                    child: SelectableText(ocrText, style: theme.textTheme.bodyMedium),
+                  child: Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.h),
+                      child: SelectableText(ocrText, style: theme.textTheme.bodyMedium),
+                    ),
                   ),
                 ),
                 Positioned(
